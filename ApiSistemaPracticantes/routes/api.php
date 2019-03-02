@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Controller\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/administrator/login', "AuthenticationController@login")->defaults('scope', 'super-user');
+Route::post('/coordinator/login', "AuthenticationController@login")->defaults('scope', 'coordinator');
+Route::post('/student/login', "AuthenticationController@login")->defaults('scope', 'student');
+Route::post('/company/login', "AuthenticationController@login")->defaults('scope', 'company');

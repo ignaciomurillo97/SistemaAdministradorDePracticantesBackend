@@ -27,5 +27,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+        Passport::tokensCan([
+            'super-user' => 'Acceso a modificar datos privilegiados',
+            'coordinator' => 'Administra el proceso de practica',
+            'student' => 'Recibe notificaciones de estudiante',
+            'company' => 'Recibe notificaciones de empresa'
+        ]);
     }
 }
