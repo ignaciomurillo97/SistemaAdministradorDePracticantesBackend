@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\User;
 use Config;
 
 class AuthenticationController extends Controller
@@ -22,12 +23,19 @@ class AuthenticationController extends Controller
         return Request::create('/oauth/token','post');
     }
 
-    public function login(Request $request) {
+    public function userHasAccess(string $email, string $scope) {
+        $userPerson = User::where('email', $email)->first();
+        return $userPerson->scope->scope == $scope;
+    }
+
+    public function login(Request $request, string $scope) {
         $email = $request->input('email');
         $password = $request->input('password');
-
-        $tokenRequest = $this->requestToken($email, $password, 'super-user', $request);
-        return Route::dispatch($tokenRequest);
+        if (!$this->userHasAccess($email, $scope)) {
+            abort(403, 'Access Denied');
+        }
+            $tokenRequest = $this->requestToken($email, $password, $scope, $request);
+            return Route::dispatch($tokenRequest);
     }
 
 

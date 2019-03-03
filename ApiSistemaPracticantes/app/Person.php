@@ -11,4 +11,8 @@ class Person extends Model
     public function user() {
         return $this->hasOne('App\User');
     }
+
+    public function gender() {
+        return $this->belongsTo('App\Gender');
+    }
 }
