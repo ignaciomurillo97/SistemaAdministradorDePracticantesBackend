@@ -9,6 +9,6 @@ class Person extends Model
     public $incrementing = false; // Don't use auto increment
 
     public function user() {
-        return $this->hasOne('App/User');
+        return $this->hasOne('App\User');
     }
 }

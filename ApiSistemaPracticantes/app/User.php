@@ -30,7 +30,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function Person() {
-        return $this->belongsTo('App\Person');
-    }
+    //public function Person() {
+    //    return $this->belongsTo('App\Person');
+    //}
 }
