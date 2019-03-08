@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\User;
 use Config;
+use App\Helpers\ResponseWrapper;
 
 class AuthenticationController extends Controller
 {
@@ -25,6 +26,7 @@ class AuthenticationController extends Controller
 
     public function userHasAccess(string $email, string $scope) {
         $userPerson = User::where('email', $email)->first();
+        if (!isset($userPerson)) return false;
         return $userPerson->scope->scope == $scope;
     }
 
@@ -32,10 +34,11 @@ class AuthenticationController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         if (!$this->userHasAccess($email, $scope)) {
-            abort(403, 'Access Denied');
+            return response(makeResponseObject("", "Access Denied"), 403);
         }
             $tokenRequest = $this->requestToken($email, $password, $scope, $request);
-            return Route::dispatch($tokenRequest);
+            $data = json_decode(Route::dispatch($tokenRequest)->getContent());
+            return response(makeResponseObject($data, ""), 200);
     }
 
 
