@@ -34,11 +34,15 @@ class AuthenticationController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         if (!$this->userHasAccess($email, $scope)) {
-            return response(makeResponseObject("", "Access Denied"), 403);
+            return response(makeResponseObject(null, "Server Error"), 403);
         }
             $tokenRequest = $this->requestToken($email, $password, $scope, $request);
             $data = json_decode(Route::dispatch($tokenRequest)->getContent());
-            return response(makeResponseObject($data, ""), 200);
+            if (isset($data->error)) {
+                return response(makeResponseObject(null, "Invalid Credentials"), 403);
+            } else {
+                return response(makeResponseObject($data, null), 200);
+            }
     }
 
 
