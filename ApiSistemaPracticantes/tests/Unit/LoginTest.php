@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\User;
-use App\Person;
+use App\Models\User;
+use App\Models\Person;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
