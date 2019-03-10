@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\User;
+use App\Models\User;
 use Config;
 use App\Helpers\ResponseWrapper;
 
@@ -38,6 +38,9 @@ class AuthenticationController extends Controller
         }
             $tokenRequest = $this->requestToken($email, $password, $scope, $request);
             $data = json_decode(Route::dispatch($tokenRequest)->getContent());
+            if (!isset($data)) {
+                return "za wardo";
+            }
             if (isset($data->error)) {
                 return response(makeResponseObject(null, "Invalid Credentials"), 403);
             } else {

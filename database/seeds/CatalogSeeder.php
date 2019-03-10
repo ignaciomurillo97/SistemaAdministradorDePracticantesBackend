@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Gender;
-use App\Scope;
+use App\Models\Gender;
+use App\Models\Scope;
 
 class CatalogSeeder extends Seeder
 {

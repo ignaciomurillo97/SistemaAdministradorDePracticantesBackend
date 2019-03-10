@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-    } //TODO: agregar tipos validables a los usuarios
+    }
 
     /**
      * Reverse the migrations.

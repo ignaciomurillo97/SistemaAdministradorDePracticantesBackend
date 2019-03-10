@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -31,10 +31,10 @@ class User extends Authenticatable
     ];
 
     public function Person() {
-        return $this->belongsTo('App\Person');
+        return $this->belongsTo('App\Models\Person');
     }
 
     public function scope() {
-        return $this->belongsTo('App\Scope');
+        return $this->belongsTo('App\Models\Scope');
     }
 }
