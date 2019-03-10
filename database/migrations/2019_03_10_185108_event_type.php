@@ -13,7 +13,7 @@ class EventType extends Migration
      */
     public function up()
     {
-        Schema::create('eventTypes', function (Blueprint $table) {
+        Schema::create('event_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("name");
             $table->text('description')->nullable();

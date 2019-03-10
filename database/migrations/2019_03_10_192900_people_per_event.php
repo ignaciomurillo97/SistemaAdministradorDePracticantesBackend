@@ -15,9 +15,9 @@ class PeoplePerEvent extends Migration
     {
         Schema::create('peoplePerEvent', function (Blueprint $table) {
             $table->unsignedInteger('event_id');
-            $table->foreign('event_id')->references('id')->on('events');
+            //$table->foreign('event_id')->references('id')->on('events');
             $table->unsignedInteger('person_id');
-            $table->foreign('person_id')->references('id')->on('people');
+            //$table->foreign('person_id')->references('id')->on('people');
             $table->boolean('confirmed');
             $table->timestamps();
         });

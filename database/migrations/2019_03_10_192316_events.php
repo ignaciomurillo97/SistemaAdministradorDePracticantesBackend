@@ -21,7 +21,7 @@ class Events extends Migration
             $table->string("image")->nullable();
             $table->string("name");
             $table->unsignedInteger('eventType');
-            $table->foreign('eventType')->references('id')->on('eventTypes');
+            /*$table->foreign('eventType')->references('id')->on('event_types');*/
             $table->timestamps();
         });
     }
