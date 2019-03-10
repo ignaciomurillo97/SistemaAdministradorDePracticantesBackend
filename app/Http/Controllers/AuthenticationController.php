@@ -38,9 +38,6 @@ class AuthenticationController extends Controller
         }
             $tokenRequest = $this->requestToken($email, $password, $scope, $request);
             $data = json_decode(Route::dispatch($tokenRequest)->getContent());
-            if (!isset($data)) {
-                return "za wardo";
-            }
             if (isset($data->error)) {
                 return response(makeResponseObject(null, "Invalid Credentials"), 403);
             } else {
