@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\Gender;
 use App\Models\Scope;
+use App\Models\Career;
 
 class CatalogSeeder extends Seeder
 {
@@ -39,6 +40,16 @@ class CatalogSeeder extends Seeder
         $company->save();
     }
 
+    public function createCareers() {
+        $career = new Career;
+        $career->career = "Ingeniería en Computación";
+        $career->save();
+
+        $career = new Career;
+        $career->career = "Arquitectura y Urbanismo";
+        $career->save();
+    }
+
     /**
      * Run the database seeds.
      *
@@ -48,6 +59,7 @@ class CatalogSeeder extends Seeder
     {
         $this->createGenders();
         $this->createScopes();
+        $this->createCareers();
     }
 
 }
