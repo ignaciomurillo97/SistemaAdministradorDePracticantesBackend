@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Gender;
 use App\Models\Scope;
 use App\Models\Career;
+use App\Models\Site;
 
 class CatalogSeeder extends Seeder
 {
@@ -40,15 +41,37 @@ class CatalogSeeder extends Seeder
         $company->save();
     }
 
-    public function createCareers() {
-        $career = new Career;
-        $career->career = "Ingeniería en Computación";
-        $career->save();
+    public function createCareersAndSites() {
+        $career_computacion = $this->createCareer('Ingeniería en Computación');
+        $career_arquitectura = $this->createCareer('Arquitectura y Urbanismo');
+        $career_administracion = $this->createCareer('Administración de Empresas');
 
-        $career = new Career;
-        $career->career = "Arquitectura y Urbanismo";
-        $career->save();
+        $site_san_jose = $this->createSite('San Jose');
+        $site_cartago = $this->createSite('Cartago');
+        $site_alajuela = $this->createSite('Alajuela');
+
+        $career_computacion->sites()->attach($site_san_jose->id);
+        $career_computacion->sites()->attach($site_cartago->id);
+        $career_computacion->sites()->attach($site_alajuela->id);
+
+        $career_arquitectura->sites()->attach($site_san_jose->id);
+        $career_arquitectura->sites()->attach($site_cartago->id);
+
+        $career_administracion->sites()->attach($site_san_jose->id);
     }
+
+    public function createSite($name) {
+        $site = new Site(["site" => $name]);
+        $site->save();
+        return $site;
+    }
+
+    public function createCareer($name) {
+        $career = new Career(["career" => $name]);
+        $career->save();
+        return $career;
+    }
+
 
     /**
      * Run the database seeds.
@@ -59,7 +82,7 @@ class CatalogSeeder extends Seeder
     {
         $this->createGenders();
         $this->createScopes();
-        $this->createCareers();
+        $this->createCareersAndSites();
     }
 
 }

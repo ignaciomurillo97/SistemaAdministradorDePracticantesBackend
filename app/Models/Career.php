@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Career extends Model
 {
-    //
+    public function Sites() {
+      return $this->belongsToMany('App\Models\Site', 'careerPerSite');
+    }
+
+    protected $fillable = ['career'];
 }

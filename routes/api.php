@@ -24,4 +24,15 @@ Route::post('/student/login', "AuthenticationController@login")->defaults('scope
 Route::post('/company/login', "AuthenticationController@login")->defaults('scope', 'company');
 
 // Career
-Route::post('/career/{id}', "CareerController@index");
+Route::get('/careers', "CareerController@all");
+Route::get('/career/{id}', "CareerController@index");
+Route::put('/career', "CareerController@store");
+Route::post('/career/{id}', "CareerController@update");
+Route::delete('/career/{id}', "CareerController@destroy");
+
+// Site
+Route::get('/sites', "SiteController@all");
+Route::get('/site/{id}', "SiteController@index");
+Route::put('/site', "SiteController@store");
+Route::post('/site/{id}', "SiteController@update");
+Route::delete('/site/{id}', "SiteController@destroy");

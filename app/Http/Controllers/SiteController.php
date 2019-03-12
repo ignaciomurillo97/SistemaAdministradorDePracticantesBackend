@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Career;
 use Illuminate\Http\Request;
-use App\Http\Resources\CareerResource;
+use App\Models\Site;
+use App\Http\Resources\SiteResource;
 
-class CareerController extends Controller
+class SiteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,11 @@ class CareerController extends Controller
      */
     public function index(int $id)
     {
-        $career = Career::find($id);
-        if ($career == null) {
-            return makeResponseObject("Failed", "No se encontro la carrera");
+        $site = Site::find($id);
+        if ($site == null) {
+            return makeResponseObject("Failed", "No se encontro la sede");
         }
-        return makeResponseObject(new CareerResource($career), null);
+        return makeResponseObject(new SiteResource($site), null);
     }
 
     /**
@@ -29,8 +29,8 @@ class CareerController extends Controller
      */
     public function all()
     {
-        $career = Career::all();
-        return makeResponseObject(CareerResource::collection($career), null);
+        $site = Site::all();
+        return makeResponseObject(SiteResource::collection($site), null);
     }
 
     /**
@@ -41,7 +41,7 @@ class CareerController extends Controller
      */
     public function store(Request $request)
     {
-        $career = Career::create($request->all());
+        $site = Site::create($request->all());
         return makeResponseObject("Success", null);
     }
 
@@ -55,12 +55,12 @@ class CareerController extends Controller
     public function update(Request $request, int $id)
     {
         try {
-            $career = Career::find($id);
-            if ($career != null){
-                $career->update($request->all());
+            $site = Site::find($id);
+            if ($site != null){
+                $site->update($request->all());
                 return makeResponseObject("Success", null);
             }
-            return makeResponseObject("Failed", "La carrera no existe");
+            return makeResponseObject("Failed", "La sede no existe");
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage);
         }
@@ -75,14 +75,15 @@ class CareerController extends Controller
     public function destroy(int $id)
     {
         try {
-            $career = Career::find($id);
-            if ($career != null) {
-                $career->delete();
+            $site = Site::find($id);
+            if ($site != null) {
+                $site->delete();
                 return makeResponseObject("Success", null);
             }
-            return makeResponseObject("Failed", "La carrera no existe");
+            return makeResponseObject("Failed", "La sede no existe");
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage());
         }
     }
+
 }
