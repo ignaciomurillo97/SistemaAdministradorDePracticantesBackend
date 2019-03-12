@@ -23,3 +23,4 @@ Route::post('/coordinator/login', "AuthenticationController@login")->defaults('s
 Route::post('/student/login', "AuthenticationController@login")->defaults('scope', 'student');
 Route::post('/company/login', "AuthenticationController@login")->defaults('scope', 'company');
 Route::resource('events','EventController');
+Route::resource('types','EventTypeController');
