@@ -24,3 +24,6 @@ Route::post('/student/login', "AuthenticationController@login")->defaults('scope
 Route::post('/company/login', "AuthenticationController@login")->defaults('scope', 'company');
 Route::resource('events','EventController');
 Route::resource('types','EventTypeController');
+
+Route::resource('activities','ActivityController');
+Route::resource('companies','CompanyController');
