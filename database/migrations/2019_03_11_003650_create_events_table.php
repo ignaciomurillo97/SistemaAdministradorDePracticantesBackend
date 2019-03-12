@@ -20,10 +20,8 @@ class CreateEventsTable extends Migration
             $table->dateTime('finish');
             $table->string("image")->nullable();
             $table->string("name");
-            $table->unsignedInteger('type_id');
-            $table->timestamps();
-
-            //$table->foreign('type_id')->references('id')->on('event_types');
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('event_types');
         });
     }
 

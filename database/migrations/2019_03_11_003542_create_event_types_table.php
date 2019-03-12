@@ -17,7 +17,6 @@ class CreateEventTypesTable extends Migration
             $table->bigIncrements('id');
             $table->string("name");
             $table->text('description')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -28,6 +27,6 @@ class CreateEventTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eventTypes');
+        Schema::dropIfExists('event_types');
     }
 }
