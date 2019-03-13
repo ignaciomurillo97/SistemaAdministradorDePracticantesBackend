@@ -39,12 +39,12 @@ class AuthenticationController extends Controller
         $scope = $user->scope->scope;
 
         $tokenRequest = $this->requestToken($email, $password, $scope, $request);
-        $data = [
-            "token" => json_decode(Route::dispatch($tokenRequest)->getContent()),
-            "person_id" => $user->person_id,
-            "person_type" => $user->scope->scope
-        ];
         if (isset($data->error)) {
+            $data = [
+                "token" => json_decode(Route::dispatch($tokenRequest)->getContent()),
+                "person_id" => $user->person_id,
+                "person_type" => $user->scope->scope
+            ];
             return response(makeResponseObject(null, "Invalid Credentials"), 403);
         } else {
             return response(makeResponseObject($data, null), 200);
