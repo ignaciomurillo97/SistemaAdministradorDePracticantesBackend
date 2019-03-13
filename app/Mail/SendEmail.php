@@ -11,16 +11,15 @@ class SendEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($name)
+    public function __construct()
     {
-        $this->name = $name;
+        
     }
 
     /**
@@ -30,6 +29,6 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->response()->json(['data'=> 'email sent','error' => NULL]);
+        return $this->view('emails.name');
     }
 }
