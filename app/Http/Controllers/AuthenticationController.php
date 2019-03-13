@@ -24,12 +24,6 @@ class AuthenticationController extends Controller
         return Request::create('/oauth/token','post');
     }
 
-    public function userHasAccess(string $email) {
-        $userPerson = User::where('email', $email)->first();
-        if (!isset($userPerson)) return false;
-        return $userPerson->scope->scope == $scope;
-    }
-
     public function getUser (string $email) {
         $userPerson = User::where('email', $email)->first();
         if (!isset($userPerson)) return false;

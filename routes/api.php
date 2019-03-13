@@ -21,11 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/login', "AuthenticationController@login");
 
-//Route::post('/administrator/login', "AuthenticationController@login")->defaults('scope', 'super-user');
-//Route::post('/coordinator/login', "AuthenticationController@login")->defaults('scope', 'coordinator');
-//Route::post('/student/login', "AuthenticationController@login")->defaults('scope', 'student');
-//Route::post('/company/login', "AuthenticationController@login")->defaults('scope', 'company');
-
 // Career
 Route::get('/careers', "CareerController@all");
 Route::get('/career/{id}', "CareerController@index");
