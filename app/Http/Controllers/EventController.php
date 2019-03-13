@@ -54,7 +54,16 @@ class EventController extends Controller
             $event->eventDate = $request->date;
             $event->start = $request->start;
             $event->finish = $request->finish;
-            $event->image = $request->image;
+            if(Input::hasFile('image')){
+                $photo = Input::file('image');
+                $extension = $photo->getClientOriginalExtension();
+                $name = time().'.'.$extension;
+                $photo->move(public_path().'\images\\',$name);
+                $event->image = 'images/'.$name;
+            }
+            else{
+                $event->image = $request->image;
+            }
             $event->type_id = $request->type;
             $event->save();
         }
