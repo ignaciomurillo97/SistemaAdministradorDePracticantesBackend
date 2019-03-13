@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EventType extends Migration
+class CreateCompanyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class EventType extends Migration
      */
     public function up()
     {
-        Schema::create('event_types', function (Blueprint $table) {
+        Schema::create('company', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("name");
-            $table->text('description')->nullable();
+            $table->string('name');
+            $table->integer('legal_id');
+            $table->text('address');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class EventType extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eventTypes');
+        Schema::dropIfExists('company');
     }
 }

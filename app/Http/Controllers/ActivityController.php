@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Event;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Validator;
 
-class EventController extends Controller
+class ActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-        return response()->json(['data'=> $events,'error' => NULL]);
+        $activities = Activity::all();
+        return response()->json(['data'=>$activities, 'error'=> NULL]);
     }
 
     /**
@@ -37,35 +37,22 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $response = response()->json(['data'=>'success', 'error' => NULL]);
+        $response = response()->json(['data'=>'success', 'error'=> NULL]);
         $validator = Validator::make($request->all(), [
-           'name' => 'required|string',
-           'date' => 'required|date',
-           'start' => 'required',
-           'finish' => 'required',
-           'type' => 'required|integer'
+            'start' => 'required',
+            'finish' => 'required',
+            'company' => 'required|integer',
+            'event' => 'required|integer'
         ]);
         if($validator->fails()){
-            $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
-        }else{
-            $event = new Event;
-            $event->name = $request->name;
-            $event->eventDate = $request->date;
-            $event->start = $request->start;
-            $event->finish = $request->finish;
-            if(Input::hasFile('image')){
-                $photo = Input::file('image');
-                $extension = $photo->getClientOriginalExtension();
-                $name = time().'.'.$extension;
-                $photo->move(public_path().'\images\\',$name);
-                $event->image = 'images/'.$name;
-            }
-            else{
-                $event->image = $request->image;
-            }
-            $event->type_id = $request->type;
-            $event->save();
+            $response = response()->json(['data'=>'failed', 'error'=> $validator->messages()->first()]);
+        } else {
+            $activity = new Activity;
+            $activity->start = $request->start;
+            $activity->finish = $request->finish;
+            $activity->company_id = $request->company;
+            $activity->event_id = $request->event;
+            $activity->save();
         }
         return $response;
     }

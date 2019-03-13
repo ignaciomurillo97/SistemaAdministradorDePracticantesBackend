@@ -48,3 +48,9 @@ Route::post('/site/{id}', "SiteController@update")
 Route::delete('/site/{id}', "SiteController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+
+Route::resource('events','EventController');
+Route::resource('types','EventTypeController');
+
+Route::resource('activities','ActivityController');
+Route::resource('companies','CompanyController');

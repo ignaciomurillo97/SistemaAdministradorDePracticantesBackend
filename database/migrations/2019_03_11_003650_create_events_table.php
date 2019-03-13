@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Events extends Migration
+class CreateEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,9 +20,8 @@ class Events extends Migration
             $table->dateTime('finish');
             $table->string("image")->nullable();
             $table->string("name");
-            $table->unsignedInteger('eventType');
-            /*$table->foreign('eventType')->references('id')->on('event_types');*/
-            $table->timestamps();
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('event_types');
         });
     }
 

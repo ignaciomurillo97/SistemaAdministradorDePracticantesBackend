@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Event;
+use App\Models\EventType;
 use Illuminate\Support\Facades\Validator;
 
-class EventController extends Controller
+class EventTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-        return response()->json(['data'=> $events,'error' => NULL]);
+        $types = EventType::all();
+        return response()->json(['data'=> $types,'error' => NULL]);
     }
 
     /**
@@ -37,35 +37,18 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $response = response()->json(['data'=>'success', 'error' => NULL]);
         $validator = Validator::make($request->all(), [
            'name' => 'required|string',
-           'date' => 'required|date',
-           'start' => 'required',
-           'finish' => 'required',
-           'type' => 'required|integer'
+           'description' => 'string',
         ]);
         if($validator->fails()){
             $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
         }else{
-            $event = new Event;
-            $event->name = $request->name;
-            $event->eventDate = $request->date;
-            $event->start = $request->start;
-            $event->finish = $request->finish;
-            if(Input::hasFile('image')){
-                $photo = Input::file('image');
-                $extension = $photo->getClientOriginalExtension();
-                $name = time().'.'.$extension;
-                $photo->move(public_path().'\images\\',$name);
-                $event->image = 'images/'.$name;
-            }
-            else{
-                $event->image = $request->image;
-            }
-            $event->type_id = $request->type;
-            $event->save();
+            $type = new EventType;
+            $type->name = $request->name;
+            $type->description = $request->description;
+            $type->save();
         }
         return $response;
     }
