@@ -24,26 +24,35 @@ class AuthenticationController extends Controller
         return Request::create('/oauth/token','post');
     }
 
-    public function userHasAccess(string $email, string $scope) {
+    public function userHasAccess(string $email) {
         $userPerson = User::where('email', $email)->first();
         if (!isset($userPerson)) return false;
         return $userPerson->scope->scope == $scope;
     }
 
-    public function login(Request $request, string $scope) {
-        $email = $request->input('email');
-        $password = $request->input('password');
-        if (!$this->userHasAccess($email, $scope)) {
-            return response(makeResponseObject(null, "Server Error"), 403);
-        }
-            $tokenRequest = $this->requestToken($email, $password, $scope, $request);
-            $data = json_decode(Route::dispatch($tokenRequest)->getContent());
-            if (isset($data->error)) {
-                return response(makeResponseObject(null, "Invalid Credentials"), 403);
-            } else {
-                return response(makeResponseObject($data, null), 200);
-            }
+    public function getUser (string $email) {
+        $userPerson = User::where('email', $email)->first();
+        if (!isset($userPerson)) return false;
+        return $userPerson;
     }
 
+    public function login(Request $request) {
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $user = $this->getUser($email);
+        $scope = $user->scope->scope;
 
+        $tokenRequest = $this->requestToken($email, $password, $scope, $request);
+        $data = [
+            "token" => json_decode(Route::dispatch($tokenRequest)->getContent()),
+            "person_id" => $user->person_id,
+            "person_type" => $user->scope->scope
+        ];
+        if (isset($data->error)) {
+            return response(makeResponseObject(null, "Invalid Credentials"), 403);
+        } else {
+            return response(makeResponseObject($data, null), 200);
+        }
+
+    }
 }
