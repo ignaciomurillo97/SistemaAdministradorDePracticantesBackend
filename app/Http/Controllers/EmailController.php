@@ -22,8 +22,14 @@ class EmailController extends Controller
     {
         $email = 'luispama96@hotmail.com';
         $name = 'Luis Pablo';
-        Mail::to($email)->send(new SendEmail($name));
-        return response()->json(['data'=> 'email sent','error' => NULL]);
+        $body = new SendEmail($name);
+        $response = response()->json(['data'=> 'email sent','error' => NULL]);
+        try{
+            Mail::to($email)->send($body);
+        }catch(\Exception $e){
+            $response = response()->json(['data'=> 'failed','error' => 'Email could not be sent']);
+        }
+        return $response;
     }
 
 }
