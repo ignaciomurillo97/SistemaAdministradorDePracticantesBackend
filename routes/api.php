@@ -24,10 +24,10 @@ Route::post('/login', "AuthenticationController@login");
 // Career
 Route::get('/careers', "CareerController@all");
 Route::get('/career/{id}', "CareerController@index");
-Route::put('/career', "CareerController@store")
+Route::post('/career', "CareerController@store")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::post('/career/{id}', "CareerController@update")
+Route::put('/career/{id}', "CareerController@update")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 Route::delete('/career/{id}', "CareerController@destroy")
@@ -37,10 +37,10 @@ Route::delete('/career/{id}', "CareerController@destroy")
 // Site
 Route::get('/sites', "SiteController@all");
 Route::get('/site/{id}', "SiteController@index");
-Route::put('/site', "SiteController@store")
+Route::post('/site', "SiteController@store")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::post('/site/{id}', "SiteController@update")
+Route::put('/site/{id}', "SiteController@update")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 Route::delete('/site/{id}', "SiteController@destroy")

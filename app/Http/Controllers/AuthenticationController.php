@@ -26,7 +26,6 @@ class AuthenticationController extends Controller
 
     public function getUser (string $email) {
         $userPerson = User::where('email', $email)->first();
-        if (!isset($userPerson)) return false;
         return $userPerson;
     }
 
@@ -34,6 +33,9 @@ class AuthenticationController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         $user = $this->getUser($email);
+        if (!isset($user)) {
+            return response(makeResponseObject(null,"Invalid Credentials"), 403);
+        }
         $scope = $user->scope->scope;
 
         $tokenRequest = $this->requestToken($email, $password, $scope, $request);
