@@ -1,3 +1,3 @@
 <div>
-    Este es  un correo de prueba más pro
+    Correo de prueba número 5, Hola: {{ $name }}
 </div>

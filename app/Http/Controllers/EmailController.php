@@ -21,7 +21,8 @@ class EmailController extends Controller
     public function send()
     {
         $email = 'luispama96@hotmail.com';
-        Mail::to($email)->send(new SendEmail());
+        $name = 'Luis Pablo';
+        Mail::to($email)->send(new SendEmail($name));
         return response()->json(['data'=> 'email sent','error' => NULL]);
     }
 
