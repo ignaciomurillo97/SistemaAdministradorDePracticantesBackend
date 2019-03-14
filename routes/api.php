@@ -48,8 +48,19 @@ Route::delete('/site/{id}', "SiteController@destroy")
     ->middleware('scope:super-user,coordinator');
 
 // Student
-Route::get('/students', 'StudentController@all');
+Route::get('/students', 'StudentController@all')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
 Route::get('/student/{id}', 'StudentController@index');
+Route::post('/student', "StudentController@store")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
+Route::put('/student/{id}', "StudentController@update")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/student/{id}', "StudentController@destroy")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 Route::resource('events','EventController');
 Route::resource('types','EventTypeController');

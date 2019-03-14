@@ -53,7 +53,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, int $id)
     {
         try {
             $student = Student::find($id);
@@ -63,7 +63,7 @@ class StudentController extends Controller
             }
             return makeResponseObject(null, "El estudiante no existe");
         } catch (\Exception $e) {
-            return makeResponseObject(null, $e->getMessage);
+            return makeResponseObject(null, $e->getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(int $id)
     {
         try {
             $student = Student::find($id);
