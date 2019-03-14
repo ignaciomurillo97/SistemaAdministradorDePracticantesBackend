@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Career;
+use App\Models\User;
+use Laravel\Passport\Passport;
 
 class CareerTest extends TestCase
 {
@@ -42,19 +44,34 @@ class CareerTest extends TestCase
         );
     }
 
-    public function test_createCareer_PUTRequest_AppearsInDatabase() {
-        $this->json('PUT', "/api/career", ['career' => 'career created for testing']);
+    public function test_createCareer_POSTRequest_AppearsInDatabase() {
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+
+        $this->json('POST', "/api/career", ['career' => 'career created for testing']);
         $this->assertDatabaseHas('careers', ['career' => 'career created for testing']);
     }
 
-    public function test_updateCareer_POSTRequestExistentCareer_AppearsInDatabase() {
+    public function test_updateCareer_PUTRequestExistentCareer_AppearsInDatabase() {
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+
         $randomCareer = Career::inRandomOrder()->first();
-        $this->json('POST', "/api/career/$randomCareer->id", ['career' => 'career updated for testing']);
+        $this->json('PUT', "/api/career/$randomCareer->id", ['career' => 'career updated for testing']);
         $this->assertDatabaseHas('careers', ['career' => 'career updated for testing']);
     }
 
     public function test_updateCareer_POSTRequestNonexistentCareer_AppearsInDatabase() {
-        $result = $this->json('POST', "/api/career/0", ['career' => 'career updated for testing']);
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+
+        $result = $this->json('PUT', "/api/career/0", ['career' => 'career updated for testing']);
         $resultDecoded = json_decode($result->getContent());
         $this->assertTrue(
             $resultDecoded->data == "Failed" &&
@@ -63,6 +80,10 @@ class CareerTest extends TestCase
     }
 
     public function test_deleteCareer_DeleteExistentCareer_DoesntAppearInDatabse() {
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
         $randomCareer = Career::inRandomOrder()->first();
         $this->json('DELETE', "/api/career/$randomCareer->id");
         $this->assertDatabaseMissing('careers', ['id' => $randomCareer->id]);
@@ -70,6 +91,10 @@ class CareerTest extends TestCase
 
 
     public function test_deleteCareer_DeleteNonexistentCareer_DoesntAppearInDatabse() {
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
         $result = $this->json('DELETE', "/api/career/0");
         $resultDecoded = json_decode($result->getContent());
         $this->assertTrue(
