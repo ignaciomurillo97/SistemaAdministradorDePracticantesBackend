@@ -26,7 +26,6 @@ class AuthenticationController extends Controller
 
     public function getUser (string $email) {
         $userPerson = User::where('email', $email)->first();
-        if (!isset($userPerson)) return false;
         return $userPerson;
     }
 
@@ -34,17 +33,21 @@ class AuthenticationController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         $user = $this->getUser($email);
+        if (!isset($user)) {
+            return response(makeResponseObject(null,"Invalid Credentials"), 403);
+        }
         $scope = $user->scope->scope;
 
         $tokenRequest = $this->requestToken($email, $password, $scope, $request);
-        $data = [
-            "token" => json_decode(Route::dispatch($tokenRequest)->getContent()),
-            "person_id" => $user->person_id,
-            "person_type" => $user->scope->scope
-        ];
-        if (isset($data->error)) {
+        $resultDecoded = json_decode(Route::dispatch($tokenRequest)->getContent());
+        if (isset($resultDecoded->error)) {
             return response(makeResponseObject(null, "Invalid Credentials"), 403);
         } else {
+            $data = [
+                "token" => $resultDecoded,
+                "person_id" => $user->person_id,
+                "person_type" => $user->scope->scope
+            ];
             return response(makeResponseObject($data, null), 200);
         }
 

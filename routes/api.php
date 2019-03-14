@@ -24,10 +24,10 @@ Route::post('/login', "AuthenticationController@login");
 // Career
 Route::get('/careers', "CareerController@all");
 Route::get('/career/{id}', "CareerController@index");
-Route::put('/career', "CareerController@store")
+Route::post('/career', "CareerController@store")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::post('/career/{id}', "CareerController@update")
+Route::put('/career/{id}', "CareerController@update")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 Route::delete('/career/{id}', "CareerController@destroy")
@@ -37,13 +37,28 @@ Route::delete('/career/{id}', "CareerController@destroy")
 // Site
 Route::get('/sites', "SiteController@all");
 Route::get('/site/{id}', "SiteController@index");
-Route::put('/site', "SiteController@store")
+Route::post('/site', "SiteController@store")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::post('/site/{id}', "SiteController@update")
+Route::put('/site/{id}', "SiteController@update")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 Route::delete('/site/{id}', "SiteController@destroy")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+// Student
+Route::get('/students', 'StudentController@all')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
+Route::get('/student/{id}', 'StudentController@index');
+Route::post('/student', "StudentController@store")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
+Route::put('/student/{id}', "StudentController@update")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/student/{id}', "StudentController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
