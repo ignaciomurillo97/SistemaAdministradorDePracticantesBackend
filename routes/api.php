@@ -48,7 +48,7 @@ Route::delete('/site/{id}', "SiteController@destroy")
     ->middleware('scope:super-user,coordinator');
 
 Route::resource('events','EventController');
-Route::resource('types','EventTypeController');
+Route::resource('eventTypes','EventTypeController');
 
 Route::resource('activities','ActivityController');
 Route::resource('companies','CompanyController');
