@@ -47,6 +47,10 @@ Route::delete('/site/{id}', "SiteController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+// Student
+Route::get('/students', 'StudentController@all');
+Route::get('/student/{id}', 'StudentController@index');
+
 Route::resource('events','EventController');
 Route::resource('types','EventTypeController');
 
