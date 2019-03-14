@@ -67,11 +67,11 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                      <tr>
                         <td align="left" valign="top">
                            <font face="'Source Sans Pro', sans-serif" color="#1a1a1a" style="font-size: 52px; line-height: 60px; font-weight: 300; letter-spacing: -1.5px;">
-                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 52px; line-height: 60px; font-weight: 300; letter-spacing: -1.5px;">Hey Vladimir,</span>
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 52px; line-height: 60px; font-weight: 300; letter-spacing: -1.5px;">Hola X,</span>
                            </font>
                            <div style="height: 33px; line-height: 33px; font-size: 31px;">&nbsp;</div>
                            <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
-                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">Recently I was chatting with David Sherry, co-founder of Death to the Stock Photo, about his company’s email strategy. They’ve grown their business almost entirely with email (we’ll look at an example later in this post) and he offered some magical advice.</span>
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">Lo invitamos al evento Charla de vinculación con la empresa. Nos gustaría contar con su presencia.</span>
                            </font>
                            <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
                            <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
