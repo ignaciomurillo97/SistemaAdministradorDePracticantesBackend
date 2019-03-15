@@ -60,6 +60,7 @@ class EventController extends Controller
                 $name = time().'.'.$extension;
                 $photo->move(public_path().'\images\\',$name);
                 $event->image = 'images/'.$name;
+
             }
             else{
                 $event->image = $request->image;

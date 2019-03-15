@@ -67,3 +67,8 @@ Route::resource('eventTypes','EventTypeController');
 
 Route::resource('activities','ActivityController');
 Route::resource('companies','CompanyController');
+
+Route::get('/mail/send/{mail}','EmailController@send');
+Route::get('/mail','EmailController@index');
+Route::get('/mail/notify','EmailController@notifyEvent');
+
