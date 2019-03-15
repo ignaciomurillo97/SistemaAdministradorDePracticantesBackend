@@ -61,6 +61,7 @@ Route::put('/student/{id}', "StudentController@update")
 Route::delete('/student/{id}', "StudentController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::get('/student/{id}/aprove', "StudentController@aproveStudent");
 
 Route::resource('events','EventController');
 Route::resource('types','EventTypeController');

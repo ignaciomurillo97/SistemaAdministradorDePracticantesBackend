@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\Person;
+use App\Models\User;
 use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
@@ -11,7 +14,7 @@ class StudentController extends Controller
     /**
      * Display a resource with a given id.
      *
-     * @param Integer
+     * @param Integer $id
      * @return \Illuminate\Http\Response
      */
     public function index(int $id)
@@ -42,14 +45,37 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $student = Student::create($request->all());
+        DB::beginTransaction();
+        $requestContents = $request->all();
+        $studentData = $requestContents['student'];
+        $userData = $requestContents['user'];
+        $personData = $requestContents['person'];
+        $this->setDefaultValues($studentData, $userData, $personData);
+
+        try {
+            $person = Person::create($personData);
+            $person->student()->save(Student::create($studentData));
+            $person->user()->save(User::create($userData));
+            //$person->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return makeResponseObject(null, "No se pudo crear el usuario.");
+        }
+        DB::commit();
+
         return makeResponseObject("Success", null);
+    }
+
+    private function setDefaultValues(&$studentData, &$userData, &$personData) {
+        $userData["person_id"] = $personData["id"];
+        $studentData["person_id"] = $personData["id"];
+        $studentData["status"] = 1;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Integer $id
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
@@ -70,7 +96,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Student  $student
+     * @param  Integer $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
@@ -85,5 +111,20 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage());
         }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function aproveStudent (Request $request, int $id) {
+        $student = Student::find($id);
+        if ($student == null) {
+            return makeResponseObject(null, 'El usuario no existe');
+        }
+        $student->status = 2;// aprobado
+        $student->save();
     }
 }
