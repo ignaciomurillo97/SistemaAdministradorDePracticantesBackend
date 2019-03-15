@@ -33,7 +33,7 @@ class EmailController extends Controller
     }
 
     public function notifyEvent(){
-
+        
     }
 
 }
