@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmail;
-use App\Models\Event;
+use App\Models\User;
 
 class EmailController extends Controller
 {
@@ -21,7 +21,7 @@ class EmailController extends Controller
 
     public function send($email)
     {
-        $name = 'Marta Gómez';
+        $name = '';
         $body = new SendEmail($name);
         $response = response()->json(['data'=> 'email sent','error' => NULL]);
         try{
@@ -33,7 +33,15 @@ class EmailController extends Controller
     }
 
     public function notifyEvent(){
-        
+        $users = User::all();
+        $response = response()->json(['data'=> 'emails sent','error' => NULL]);
+        foreach($users as $user){
+            $responses = self::send($user->email);
+            if($responses->getdata()->error != NULL){
+                return response()->json(['data'=> 'failed','error' => 'Email could not be sent']);
+            }
+        }
+        return $response;
     }
 
 }
