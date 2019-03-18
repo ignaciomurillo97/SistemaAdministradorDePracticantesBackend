@@ -62,12 +62,14 @@ Route::delete('/student/{id}', "StudentController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+//Events
 Route::resource('events','EventController');
 Route::resource('eventTypes','EventTypeController');
 
 Route::resource('activities','ActivityController');
 Route::resource('companies','CompanyController');
 
+//Mails
 Route::get('/mail/send/{mail}','EmailController@send');
 Route::get('/mail','EmailController@index');
 Route::get('/mail/notify','EmailController@notifyEvent');

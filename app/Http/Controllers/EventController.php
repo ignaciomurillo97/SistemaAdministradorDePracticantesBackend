@@ -117,6 +117,6 @@ class EventController extends Controller
     }
 
     public function confirmAssistance($user,$event){
-        
+        Event::confirmAssistance($user,$event);
     }
 }
