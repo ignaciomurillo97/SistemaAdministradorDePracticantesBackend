@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class EventController extends Controller
 {
@@ -79,7 +80,8 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::find($id);
+        return response()->json(['data'=> $event,'error' => NULL]);
     }
 
     /**
