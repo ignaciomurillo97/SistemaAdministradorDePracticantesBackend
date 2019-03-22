@@ -16,8 +16,8 @@ class CreatePeoplePerEventTable extends Migration
         Schema::create('people_per_event', function (Blueprint $table) {
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('id')->on('events');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('people_id');
+            $table->foreign('people_id')->references('id')->on('people');
             $table->boolean('confirmed');
         });
     }
