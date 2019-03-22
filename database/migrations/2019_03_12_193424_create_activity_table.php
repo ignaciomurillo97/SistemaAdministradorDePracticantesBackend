@@ -18,7 +18,7 @@ class CreateActivityTable extends Migration
             $table->time('start');
             $table->time('finish');
             $table->unsignedBigInteger('event_id');
-            $table->integer('company_id');
+            $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('legal_id')->on('company');
             $table->foreign('event_id')->references('id')->on('events');
             $table->timestamps();

@@ -41,7 +41,7 @@ class ActivityController extends Controller
         $validator = Validator::make($request->all(), [
             'start' => 'required',
             'finish' => 'required',
-            'company' => 'required|integer',
+            'company' => 'required|digits:10',
             'event' => 'required|integer'
         ]);
         if($validator->fails()){
