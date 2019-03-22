@@ -65,6 +65,7 @@ Route::delete('/student/{id}', "StudentController@destroy")
 //Events
 Route::resource('events','EventController');
 Route::resource('eventTypes','EventTypeController');
+Route::get('/events/confirm/{event}','EventController@confirmAssistance')->middleware('auth:api');
 
 Route::resource('activities','ActivityController');
 Route::resource('companies','CompanyController');
