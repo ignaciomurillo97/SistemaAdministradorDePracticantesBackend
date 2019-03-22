@@ -59,8 +59,9 @@ class EventController extends Controller
                 $photo = Input::file('image');
                 $extension = $photo->getClientOriginalExtension();
                 $name = time().'.'.$extension;
+                $path = public_path().'\images\\'.$name;
                 $photo->move(public_path().'\images\\',$name);
-                $event->image = 'images/'.$name;
+                $event->image = $path;
 
             }
             else{
