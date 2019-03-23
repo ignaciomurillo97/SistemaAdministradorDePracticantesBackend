@@ -38,6 +38,17 @@ class StudentController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAproved()
+    {
+        $students = Student::where('status', 1); // aprobado
+        return makeResponseObject(StudentResource::collection($students), null);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

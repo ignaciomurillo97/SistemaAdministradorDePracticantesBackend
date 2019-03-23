@@ -51,8 +51,13 @@ Route::delete('/site/{id}', "SiteController@destroy")
 Route::get('/students', 'StudentController@all')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
-Route::get('/student/{id}', 'StudentController@index');
 Route::post('/student', "StudentController@store")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
+Route::get('/student/aproved', "StudentController@getAproved")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/student/{id}', 'StudentController@index')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
 Route::put('/student/{id}', "StudentController@update")
@@ -61,7 +66,9 @@ Route::put('/student/{id}', "StudentController@update")
 Route::delete('/student/{id}', "StudentController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::get('/student/{id}/aprove', "StudentController@aproveStudent");
+Route::post('/student/{id}/aproved', "StudentController@aproveStudent")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 Route::resource('events','EventController');
 Route::resource('types','EventTypeController');
