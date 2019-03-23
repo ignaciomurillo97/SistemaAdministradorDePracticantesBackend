@@ -15,11 +15,11 @@ class CreateActivityTable extends Migration
     {
         Schema::create('activity', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('start');
-            $table->dateTime('finish');
+            $table->time('start');
+            $table->time('finish');
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('company');
+            $table->foreign('company_id')->references('legal_id')->on('company');
             $table->foreign('event_id')->references('id')->on('events');
             $table->timestamps();
         });

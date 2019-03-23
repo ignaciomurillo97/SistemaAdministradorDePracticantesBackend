@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class EventController extends Controller
 {
@@ -58,8 +60,10 @@ class EventController extends Controller
                 $photo = Input::file('image');
                 $extension = $photo->getClientOriginalExtension();
                 $name = time().'.'.$extension;
+                $path = public_path().'\images\\'.$name;
                 $photo->move(public_path().'\images\\',$name);
-                $event->image = 'images/'.$name;
+                $event->image = $path;
+
             }
             else{
                 $event->image = $request->image;
@@ -78,7 +82,9 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::find($id);
+        $activities = Activity::where('event_id', $id)->get();
+        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities] ,'error' => NULL]);
     }
 
     /**
@@ -113,5 +119,10 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function confirmAssistance($event){
+        $user = auth()->guard('api')->user();
+        Event::confirmAssistance($user->id,$event);
     }
 }

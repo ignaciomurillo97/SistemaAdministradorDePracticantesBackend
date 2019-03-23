@@ -70,8 +70,16 @@ Route::post('/student/{id}/aproved', "StudentController@aproveStudent")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+//Events
 Route::resource('events','EventController');
-Route::resource('types','EventTypeController');
+Route::resource('eventTypes','EventTypeController');
+Route::get('/events/confirm/{event}','EventController@confirmAssistance')->middleware('auth:api');
 
 Route::resource('activities','ActivityController');
 Route::resource('companies','CompanyController');
+
+//Mails
+Route::get('/mail/send/{mail}','EmailController@send');
+Route::get('/mail','EmailController@index');
+Route::get('/mail/notify','EmailController@notifyEvent');
+

@@ -40,7 +40,7 @@ class CompanyController extends Controller
         $response = response()->json(['data'=>'success', 'error' => NULL]);
         $validator = Validator::make($request->all(), [
            'name' => 'required|string',
-           'legal_id' => 'required|integer',
+           'legal_id' => 'required|digits:10',
            'address' => 'required'
         ]);
         if($validator->fails()){
