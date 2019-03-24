@@ -8,5 +8,5 @@ class Company extends Model
 {
     public $timestamps = false;
     protected $table = 'company';
-    protected $fillable = ['name','legal_id','address'];
+    protected $fillable = ['name','legal_id','address','person_id'];
 }
