@@ -124,5 +124,6 @@ class EventController extends Controller
     public function confirmAssistance($event){
         $user = auth()->guard('api')->user();
         Event::confirmAssistance($user->id,$event);
+        return response()->json(['data'=> 'success' ,'error' => NULL]);
     }
 }
