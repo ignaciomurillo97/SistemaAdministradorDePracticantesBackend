@@ -15,8 +15,10 @@ class CreateActivityTable extends Migration
     {
         Schema::create('activity', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->time('start');
-            $table->time('finish');
+            $table->string("activityName");
+            $table->time('duration');
+            $table->string("charlista");
+            $table->text("remarks");
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('legal_id')->on('company');
