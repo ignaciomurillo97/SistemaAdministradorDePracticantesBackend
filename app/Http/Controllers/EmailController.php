@@ -36,9 +36,11 @@ class EmailController extends Controller
         $users = User::all();
         $response = response()->json(['data'=> 'emails sent','error' => NULL]);
         foreach($users as $user){
-            $responses = self::send($user->email);
-            if($responses->getdata()->error != NULL){
-                return response()->json(['data'=> 'failed','error' => 'Email could not be sent']);
+            if($user->scope_id == 3 || $user->scope_id == 4){
+                $responses = self::send($user->email);
+                if($responses->getdata()->error != NULL){
+                    return response()->json(['data'=> 'failed','error' => 'Email could not be sent']);
+                }
             }
         }
         return $response;

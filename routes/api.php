@@ -77,9 +77,7 @@ Route::resource('companies','CompanyController');
 Route::get('/mail/send/{mail}','EmailController@send')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::get('/mail','EmailController@index')
-	->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator');
+Route::get('/mail','EmailController@index');
 Route::get('/mail/notify','EmailController@notifyEvent')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
