@@ -39,19 +39,22 @@ class ActivityController extends Controller
     {
         $response = response()->json(['data'=>'success', 'error'=> NULL]);
         $validator = Validator::make($request->all(), [
-            'start' => 'required',
-            'finish' => 'required',
+            'duration' => 'required',
             'company' => 'required|digits:10',
-            'event' => 'required|integer'
+            'event' => 'required|integer',
+            'charlista' => 'required',
+            'activityName' => 'required'
         ]);
         if($validator->fails()){
             $response = response()->json(['data'=>'failed', 'error'=> $validator->messages()->first()]);
         } else {
             $activity = new Activity;
-            $activity->start = $request->start;
-            $activity->finish = $request->finish;
+            $activity->duration = $request->duration;
             $activity->company_id = $request->company;
             $activity->event_id = $request->event;
+            $activity->charlista = $request->charlista;
+            $activity->activityName = $request->activityName;
+            $activity->remarks = $request->remarks;
             $activity->save();
         }
         return $response;
