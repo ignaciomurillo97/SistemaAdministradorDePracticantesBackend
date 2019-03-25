@@ -12,7 +12,11 @@ class Student extends Model
         return $this->hasOne('App\Models\Person');
     }
 
+    public function semester () {
+        return $this->belongsTo('App\Models\Semester');
+    }
+
     protected $fillable = [
-        'id', 'person_id', 'career_id', 'site_id', 'status'
+        'id', 'person_id', 'career_id', 'site_id', 'status', 'semester_id', 'image'
     ];
 }
