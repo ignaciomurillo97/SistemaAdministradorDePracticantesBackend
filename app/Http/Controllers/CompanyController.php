@@ -41,7 +41,8 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
            'name' => 'required|string',
            'legal_id' => 'required|digits:10',
-           'address' => 'required'
+           'address' => 'required',
+           'person_id' => 'required'
         ]);
         if($validator->fails()){
             $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
@@ -49,6 +50,7 @@ class CompanyController extends Controller
             $company = new Company;
             $company->name = $request->name;
             $company->legal_id = $request->legal_id;
+            $company->person_id = $request->person_id;
             $company->address = $request->address;
             $company->save();
         }

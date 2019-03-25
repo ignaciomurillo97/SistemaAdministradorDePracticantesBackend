@@ -81,16 +81,22 @@ Route::resource('eventTypes','EventTypeController');
 Route::get('/events/confirm/{event}','EventController@confirmAssistance')
 	->middleware('auth:api');
 
+// Activities
 Route::resource('activities','ActivityController');
-Route::resource('companies','CompanyController');
+
+// Companies
+Route::get('/companies', 'CompanyController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,company');
+Route::post('/companies','CompanyController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,company');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::get('/mail','EmailController@index')
-	->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator');
+Route::get('/mail','EmailController@index');
 Route::get('/mail/notify','EmailController@notifyEvent')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');

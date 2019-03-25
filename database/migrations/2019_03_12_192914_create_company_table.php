@@ -17,6 +17,7 @@ class CreateCompanyTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('legal_id')->primary();
             $table->text('address');
+            $table->bigInteger('person_id');
             $table->timestamps();
         });
     }
