@@ -1,4 +1,5 @@
 ApiSistemaPracticantes/*
+public/images/*
 vendor/
 node_modules/
 npm-debug.log
