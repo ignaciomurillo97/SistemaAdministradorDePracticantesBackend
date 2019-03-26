@@ -21,6 +21,6 @@ class Person extends Model
     }
 
     protected $fillable = [
-        'id', 'name', 'lastName', 'secondLastName', 'gender_id'
+        'id', 'name', 'lastName', 'secondLastName', 'gender_id', 'birthday', 'telephone'
     ];
 }

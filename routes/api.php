@@ -66,7 +66,10 @@ Route::put('/student/{id}', "StudentController@update")
 Route::delete('/student/{id}', "StudentController@destroy")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::post('/student/{id}/aproved', "StudentController@aproveStudent")
+Route::post('/student/{id}/aprove', "StudentController@aproveStudent")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/student/{id}/reject', "StudentController@rejectStudent")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 

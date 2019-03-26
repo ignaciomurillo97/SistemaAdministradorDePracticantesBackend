@@ -5,6 +5,7 @@ use App\Models\Gender;
 use App\Models\Scope;
 use App\Models\Career;
 use App\Models\Site;
+use App\Models\Semester;
 
 class CatalogSeeder extends Seeder
 {
@@ -72,6 +73,10 @@ class CatalogSeeder extends Seeder
         return $career;
     }
 
+    public function createSemesters() {
+        $semester = new Semester(["semester" => 1, "start"=>date_create("2019-2-6"), "end"=>date_create("2019-6-15")]);
+        $semester->save();
+    }
 
     /**
      * Run the database seeds.
@@ -83,6 +88,7 @@ class CatalogSeeder extends Seeder
         $this->createGenders();
         $this->createScopes();
         $this->createCareersAndSites();
+        $this->createSemesters();
     }
 
 }
