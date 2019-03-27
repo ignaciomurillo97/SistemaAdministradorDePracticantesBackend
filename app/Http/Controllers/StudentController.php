@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Input;
 
 class StudentController extends Controller
 {
+    public $extensions = ['image/jpeg' => 'jpg',
+                    'image/png' => 'png'];
+
     /**
      * Display a resource with a given id.
      *
@@ -63,29 +66,38 @@ class StudentController extends Controller
         $userData = $requestContents['user'];
         $personData = $requestContents['person'];
         $this->setDefaultValues($studentData, $userData, $personData);
-        if (Input::hasFIle('image')) {
-            $photo = Input::file('image');
-            $extension = $photo->getClientOriginalExtension();
-            $name = time().'.'.$extension;
-            $path = public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
-            $photo->move(public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR,$name);
-            $studentData['image'] = $path;
-        }
-
 
         try {
+            if (isset($personData['image'])) {
+                $photo = base64_decode($personData['image']);
+                $f = finfo_open();
+                $mimeType = finfo_buffer($f, $photo, FILEINFO_MIME_TYPE);
+                $name = time().'.'.$this->extensions[$mimeType];
+                $path = public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
+
+                $file = fopen($path, 'w');
+                fwrite($file, $photo);
+                fclose($file);
+
+                $studentData['image'] = $path;
+            } else {
+                $studentData['image'] = null;
+            }
             $person = Person::create($personData);
             $person->student()->save(Student::create($studentData));
             $person->user()->save(User::create($userData));
             $person->save();
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
             return makeResponseObject(null, "No se pudo crear el usuario.");
         }
         DB::commit();
 
         return makeResponseObject("Success", null);
+    }
+
+    private function isValidFunction ($mimeType) {
+        return isset($this->extensions[$mimeType]);
     }
 
     private function setDefaultValues(&$studentData, &$userData, &$personData) {
