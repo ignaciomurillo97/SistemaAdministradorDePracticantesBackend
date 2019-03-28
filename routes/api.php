@@ -54,7 +54,16 @@ Route::get('/students', 'StudentController@all')
 Route::post('/student', "StudentController@store")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
-Route::get('/student/aproved', "StudentController@getAproved")
+Route::get('/students/aproved', "StudentController@filterByStatus")
+    ->defaults('status', 1)
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/students/pending', "StudentController@filterByStatus")
+    ->defaults('status', 2)
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/students/rejected', "StudentController@filterByStatus")
+    ->defaults('status', 3)
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 Route::get('/student/{id}', 'StudentController@index')

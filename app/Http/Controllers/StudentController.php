@@ -46,9 +46,9 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getAproved()
+    public function filterByStatus($status)
     {
-        $students = Student::where('status', 1)->get(); // aprobado
+        $students = Student::where('status', $status)->get(); // aprobado
         return makeResponseObject(StudentResource::collection($students), null);
     }
 
