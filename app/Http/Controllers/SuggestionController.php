@@ -69,8 +69,8 @@ class SuggestionController extends Controller
      */
     public function show($id)
     {
-    	$event = Event::find($id);
-        $activities = Suggestion::where('event_id', $id)->get();
+    	$suggest = Suggestion::find($id);
+        $company = Company::where('legal_id', $suggest->company_id)->get();
         return response()->json(['data'=> ['event'=>$event,'activities'=>$activities] ,'error' => NULL]);
     }
 

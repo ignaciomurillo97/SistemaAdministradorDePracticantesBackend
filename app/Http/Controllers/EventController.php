@@ -41,14 +41,14 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $response = response()->json(['data'=>'success', 'error' => NULL]);
         $validator = Validator::make($request->all(), [
            'name' => 'required|string',
            'date' => 'required|date',
            'start' => 'required',
            'finish' => 'required',
-           'type' => 'required|integer'
+           'type' => 'required|integer',
+           'activities' => 'array'
         ]);
         if($validator->fails()){
             $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
@@ -68,9 +68,13 @@ class EventController extends Controller
             $event->type_id = $request->type;
             try{     
                 $event->save();
+                $request->event = $event->id;
+                $ActivityController = new ActivityController;
+                $response = $ActivityController->store($request);
+                //error_log(sizeof($request['activities']));
             }
-            catch(\Illuminate\Database\QueryException $e){
-                $response =  response()->json(['data'=>'failed', 'error' => $e]);
+            catch(\Exception $e){
+                $response =  response()->json(['data'=>'failed', 'error' => $e->getMessage()]);
             }
         }
         return $response;
