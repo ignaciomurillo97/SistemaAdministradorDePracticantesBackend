@@ -73,6 +73,13 @@ Route::post('/student/{id}/reject', "StudentController@rejectStudent")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+// Catalogs
+Route::get('/catalog/gender', "CatalogController@getGender");
+Route::get('/catalog/semester', "CatalogController@getSemester");
+Route::get('/catalog/scope', "CatalogController@getScope")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
 //Events
 Route::resource('events','EventController')
 	->middleware('auth:api')
