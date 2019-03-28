@@ -104,6 +104,17 @@ Route::resource('eventTypes','EventTypeController');
 Route::get('/events/confirm/{event}','EventController@confirmAssistance')
 	->middleware('auth:api');
 
+//Suggestions
+Route::post('/suggestions','SuggestionController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/suggestions','SuggestionController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/suggestions/{id}','SuggestionController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
 // Activities
 Route::resource('activities','ActivityController');
 Route::resource('suggestions','SuggestionController');
