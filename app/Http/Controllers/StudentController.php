@@ -69,31 +69,53 @@ class StudentController extends Controller
 
         try {
             if (isset($personData['image'])) {
-                $photo = base64_decode($personData['image']);
-                $f = finfo_open();
-                $mimeType = finfo_buffer($f, $photo, FILEINFO_MIME_TYPE);
-                $name = time().'.'.$this->extensions[$mimeType];
-                $path = public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
-
-                $file = fopen($path, 'w');
-                fwrite($file, $photo);
-                fclose($file);
-
-                $studentData['image'] = $path;
+                $studentData['image'] = $this->saveBase64ImageToDisk($personData['image']);
             } else {
                 $studentData['image'] = null;
             }
-            $person = Person::create($personData);
-            $person->student()->save(Student::create($studentData));
-            $person->user()->save(User::create($userData));
-            $person->save();
+            $this->saveDataToDB($personData, $studentData, $userData);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollback();
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062) {
+                return makeResponseObject(null, "Ceoula, carné o correo ya existente en el sistema");
+            }
+            return makeResponseObject(null, "No se pudo crear el usuario");
         } catch (\Exception $e) {
             DB::rollback();
-            return makeResponseObject(null, "No se pudo crear el usuario.");
+            return $e;
+            return makeResponseObject(null, "Error del servidor");
         }
+
         DB::commit();
 
         return makeResponseObject("Success", null);
+    }
+
+    /**
+     * Save base 64 image to disk with timestamp name
+     * 
+     * @param string image
+     * @return string path
+     */
+    private function saveBase64ImageToDisk ($image) {
+        $photo = base64_decode($image);
+        $f = finfo_open();
+        $mimeType = finfo_buffer($f, $photo, FILEINFO_MIME_TYPE);
+        $name = time().'.'.$this->extensions[$mimeType];
+        $pathFromServerRoot = DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
+
+        $file = fopen(public_path().$pathFromServerRoot, 'w');
+        fwrite($file, $photo);
+        fclose($file);
+        return $pathFromServerRoot;
+    }
+
+    private function saveDataToDB ($personData, $studentData, $userData) {
+        $person = Person::create($personData);
+        $person->student()->save(Student::create($studentData));
+        $person->user()->save(User::create($userData));
+        $person->save();
     }
 
     private function isValidFunction ($mimeType) {
