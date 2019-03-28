@@ -83,11 +83,12 @@ Route::get('/events/confirm/{event}','EventController@confirmAssistance')
 
 // Activities
 Route::resource('activities','ActivityController');
+Route::resource('suggestions','SuggestionController');
 
 // Companies
 Route::get('/companies', 'CompanyController@index')
     ->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator,company');
+    ->middleware('scope:super-user,coordinator,company3');
 Route::post('/companies','CompanyController@store')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,company');
