@@ -123,9 +123,10 @@ Route::resource('suggestions','SuggestionController');
 Route::get('/companies', 'CompanyController@index')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,company3');
-Route::post('/companies','CompanyController@store')
+Route::post('/companies','CompanyController@store');
+Route::get('/company/{id}', 'CompanyController@show')
     ->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator,company');
+    ->middleware('scope:super-user,coordinator');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')
