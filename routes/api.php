@@ -90,9 +90,16 @@ Route::get('/catalog/scope', "CatalogController@getScope")
     ->middleware('scope:super-user,coordinator');
 
 //Events
-Route::resource('events','EventController')
-	->middleware('auth:api')
+Route::post('/events','EventController@store')
+    ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::get('/events','EventController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/events/{id}','EventController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
 Route::resource('eventTypes','EventTypeController');
 Route::get('/events/confirm/{event}','EventController@confirmAssistance')
 	->middleware('auth:api');

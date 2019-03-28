@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Activity;
+use App\Models\Suggestion;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\ActivityController;
 
 class EventController extends Controller
 {
@@ -57,19 +59,19 @@ class EventController extends Controller
             $event->start = $request->start;
             $event->finish = $request->finish;
             if(Input::hasFile('image')){
-                $photo = Input::file('image');
-                $extension = $photo->getClientOriginalExtension();
-                $name = time().'.'.$extension;
-                $path = public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
-                $photo->move(public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR,$name);
-                $event->image = $path;
+                $event->image = saveBase64ImageToDisk($event->image);
 
             }
             else{
                 $event->image = $request->image;
             }
             $event->type_id = $request->type;
-            $event->save();
+            try{     
+                $event->save();
+            }
+            catch(\Illuminate\Database\QueryException $e){
+                $response =  response()->json(['data'=>'failed', 'error' => $e]);
+            }
         }
         return $response;
     }
@@ -84,7 +86,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         $activities = Activity::where('event_id', $id)->get();
-        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities] ,'error' => NULL]);
+        $suggestions = Suggestion::where('event_id', $id)->get();
+        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities, 'suggestions' => $suggestions] ,'error' => NULL]);
     }
 
     /**
