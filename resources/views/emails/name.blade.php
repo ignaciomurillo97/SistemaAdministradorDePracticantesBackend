@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-<title>Mailto</title>
+<title>Confirmación de Asistencia</title>
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 <style type="text/css">
 html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
@@ -75,7 +75,7 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                            </font>
                            <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
                            <font face="'Source Sans Pro', sans-serif" color="#585858" style="font-size: 24px; line-height: 32px;">
-                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">Es de suma importancia que nos acompañe pues le ahorramos el trabajo de tener que buscar empresas, además que puede realizarles diversas preguntas</span>
+                              <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 24px; line-height: 32px;">Es de suma importancia que nos acompañe pues le ahorramos el trabajo de tener que buscar empresas, además que puede realizarles diversas preguntas.</span>
                            </font>
                            <div style="height: 33px; line-height: 33px; font-size: 31px;">&nbsp;</div>
                            <table class="mob_btn" cellpadding="0" cellspacing="0" border="0" style="background: #27cbcc; border-radius: 4px;">
@@ -83,7 +83,7 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                                  <td align="center" valign="top"> 
                                     <a href="#" target="_blank" style="display: block; border: 1px solid #27cbcc; border-radius: 4px; padding: 12px 23px; font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">
                                        <font face="'Source Sans Pro', sans-serif" color="#ffffff" style="font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">
-                                          <span style="font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">Read&nbsp;more</span>
+                                          <span style="font-family: 'Source Sans Pro', Arial, Verdana, Tahoma, Geneva, sans-serif; color: #ffffff; font-size: 20px; line-height: 30px; text-decoration: none; white-space: nowrap; font-weight: 600;">Confirmar</span>
                                        </font>
                                     </a>
                                  </td>
@@ -126,11 +126,11 @@ html { -webkit-text-size-adjust: none; -ms-text-size-adjust: none;}
                                     <td class="mob_center" align="left" valign="top">
                                        <div style="height: 13px; line-height: 13px; font-size: 11px;">&nbsp;</div>
                                        <font face="'Source Sans Pro', sans-serif" color="#000000" style="font-size: 19px; line-height: 23px; font-weight: 600;">
-                                          <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 19px; line-height: 23px; font-weight: 600;">Jimmy Qudini</span>
+                                          <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 19px; line-height: 23px; font-weight: 600;">Adriana Álvarez</span>
                                        </font>
                                        <div style="height: 1px; line-height: 1px; font-size: 1px;">&nbsp;</div>
                                        <font face="'Source Sans Pro', sans-serif" color="#7f7f7f" style="font-size: 19px; line-height: 23px;">
-                                          <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #7f7f7f; font-size: 19px; line-height: 23px;">Creative Director at Mailto</span>
+                                          <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #7f7f7f; font-size: 19px; line-height: 23px;">Coordinadora de Práctica</span>
                                        </font>
                                     </td>
                                     <td width="18" style="width: 18px; max-width: 18px; min-width: 18px;">&nbsp;</td>
