@@ -37,18 +37,13 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        $response = response()->json(['data'=>'success', 'error'=> NULL]);
-        $validator = Validator::make($request->all(), [
-            'start' => 'required',
-            'finish' => 'required',
-            'event' => 'required|integer'
-        ]);
-        if($validator->fails()){
-            $response = response()->json(['data'=>'failed', 'error'=> $validator->messages()->first()]);
-        } else {
+        $response = response()->json(['data'=>'success', 'error' => NULL]);
+        $hours = $request['activities'];
+        /*Ciclo a recorrer las actividades*/
+        for($i = 0; $i < sizeof($hours) - 1; $i += 2){
             $activity = new Activity;
-            $activity->start = $request->start;
-            $activity->finish = $request->finish;
+            $activity->start = $hours[$i];
+            $activity->finish = $hours[$i + 1];
             $activity->event_id = $request->event;
             $activity->save();
         }
