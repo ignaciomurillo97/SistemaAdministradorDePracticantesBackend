@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Activity;
+use App\Models\Suggestion;
 use Illuminate\Support\Facades\Validator;
 
-class ActivityController extends Controller
+class SuggestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = Activity::all();
+        $activities = Suggestion::all();
         return response()->json(['data'=>$activities, 'error'=> NULL]);
     }
 
@@ -39,18 +39,24 @@ class ActivityController extends Controller
     {
         $response = response()->json(['data'=>'success', 'error'=> NULL]);
         $validator = Validator::make($request->all(), [
-            'start' => 'required',
-            'finish' => 'required',
-            'event' => 'required|integer'
+            'event' => 'required|integer',
+            'duration' => 'required',
+            'company' => 'required|digits:10',
+            'name' => 'required|integer',
+            'charlista' => 'required',
+            'name' => 'required'
         ]);
         if($validator->fails()){
             $response = response()->json(['data'=>'failed', 'error'=> $validator->messages()->first()]);
         } else {
-            $activity = new Activity;
-            $activity->start = $request->start;
-            $activity->finish = $request->finish;
-            $activity->event_id = $request->event;
-            $activity->save();
+            $suggestion = new Suggestion;
+            $suggestion->duration = $request->duration;
+            $suggestion->company_id = $request->company;
+            $suggestion->event_id = $request->event;
+            $suggestion->charlista = $request->charlista;
+            $suggestion->name = $request->name;
+            $suggestion->remarks = $request->remarks;
+            $suggestion->save();
         }
         return $response;
     }

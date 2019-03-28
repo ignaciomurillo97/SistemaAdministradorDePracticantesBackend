@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Company;
+use App\Models\User;
+use Laravel\Passport\Passport;
 
 class CompanyTest extends TestCase
 {
@@ -18,7 +20,13 @@ class CompanyTest extends TestCase
      */
     public function test_GetAllCompanies_RequestApi_ReturnsAllCompanies()
     {
-        $companies = factory(Company::class, 10)->create();
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+
+        $user = User::where('scope_id', '4')->first();
+        $companies = factory(Company::class, 10)->create(['person_id'=>$user->person_id]);
         $result = $this->json('GET', '/api/companies');
         $decodedResult = json_decode($result->getContent());
         $resultSize = sizeof($decodedResult->data);
@@ -28,7 +36,13 @@ class CompanyTest extends TestCase
 
     public function test_createCompany_POSTRequest_AppearsInDatabase()
     {
-        $this->json('POST', "/api/companies", ['legal_id'=>'3789102011', 'name'=>'ITCR for testing', 'address'=>'San Jose']);
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+        $user = User::where('scope_id', '4')->first();
+
+        $this->json('POST', "/api/companies", ['legal_id'=>'3789102011', 'name'=>'ITCR for testing', 'address'=>'San Jose', 'person_id'=>$user->person_id]);
         $this->assertDatabaseHas('company', ['legal_id'=>'3789102011']);
     }
 }

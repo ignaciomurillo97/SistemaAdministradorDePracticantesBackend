@@ -8,7 +8,7 @@ $factory->define(App\Models\Event::class, function (Faker $faker) {
         'eventDate'=> $faker->date($format = 'Y-m-d', $max = 'now'),
         'start'=> $faker->time($format = 'H:i:s', $max = 'now'),
         'finish'=> $faker->time($format = 'H:i:s', $max = 'now'),
-        'image'=> $faker->optional()->imageUrl($width = 640, $height = 480),
+        'image'=> 'default.jpg',
         'name'=> $faker->word
     ];
 });
