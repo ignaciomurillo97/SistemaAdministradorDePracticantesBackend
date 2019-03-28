@@ -69,7 +69,7 @@ class StudentController extends Controller
 
         try {
             if (isset($personData['image'])) {
-                $studentData['image'] = $this->saveBase64ImageToDisk($personData['image']);
+                $studentData['image'] = saveBase64ImageToDisk($personData['image']);
             } else {
                 $studentData['image'] = null;
             }
@@ -90,25 +90,6 @@ class StudentController extends Controller
         DB::commit();
 
         return makeResponseObject("Success", null);
-    }
-
-    /**
-     * Save base 64 image to disk with timestamp name
-     * 
-     * @param string image
-     * @return string path
-     */
-    private function saveBase64ImageToDisk ($image) {
-        $photo = base64_decode($image);
-        $f = finfo_open();
-        $mimeType = finfo_buffer($f, $photo, FILEINFO_MIME_TYPE);
-        $name = time().'.'.$this->extensions[$mimeType];
-        $pathFromServerRoot = DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
-
-        $file = fopen(public_path().$pathFromServerRoot, 'w');
-        fwrite($file, $photo);
-        fclose($file);
-        return $pathFromServerRoot;
     }
 
     private function saveDataToDB ($personData, $studentData, $userData) {
