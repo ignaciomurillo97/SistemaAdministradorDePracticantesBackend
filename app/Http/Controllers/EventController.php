@@ -9,6 +9,7 @@ use App\Models\Suggestion;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\SuggestionController;
 
 class EventController extends Controller
 {
@@ -128,9 +129,16 @@ class EventController extends Controller
         //
     }
 
-    public function confirmAssistance($event){
+    public function confirmAssistance(Request $request, $event){
+        $response = response()->json(['data'=>'success', 'error'=> NULL]);
         $user = auth()->guard('api')->user();
-        Event::confirmAssistance($user->id,$event);
-        return response()->json(['data'=> 'success' ,'error' => NULL]);
+        Event::confirmAssistance($user->person_id,$event);
+        if($user->scope_id == 4){
+            $request->request->add(['event' => $event,'person_id' =>$user->person_id]);
+            error_log($request);
+            $SuggestionController = new SuggestionController;
+            $response = $SuggestionController->store($request);
+        }
+        return $response;
     }
 }

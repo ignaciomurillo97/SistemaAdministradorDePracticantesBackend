@@ -13,6 +13,6 @@ class Event extends Model
 
     public static function confirmAssistance($user,$event){
     	DB::table('people_per_event')->insert(
-    		['user_id' => $user, 'event_id' => $event, 'confirmed' => true]);
+    		['person_id' => $user, 'event_id' => $event, 'confirmed' => true]);
     }
 }
