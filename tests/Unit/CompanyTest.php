@@ -43,6 +43,6 @@ class CompanyTest extends TestCase
         $user = User::where('scope_id', '4')->first();
 
         $this->json('POST', "/api/companies", ['legal_id'=>'3789102011', 'name'=>'ITCR for testing', 'address'=>'San Jose', 'person_id'=>$user->person_id]);
-        $this->assertDatabaseHas('company', ['legal_id'=>'3789102011']);
+        $this->assertDatabaseHas('companies', ['legal_id'=>'3789102011']);
     }
 }

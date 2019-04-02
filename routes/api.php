@@ -88,12 +88,30 @@ Route::get('/catalog/scope', "CatalogController@getScope")
     ->middleware('scope:super-user,coordinator');
 
 //Events
-Route::resource('events','EventController')
-	->middleware('auth:api')
+Route::post('/events','EventController@store')
+    ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::get('/events','EventController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/events/{id}','EventController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
 Route::resource('eventTypes','EventTypeController');
 Route::get('/events/confirm/{event}','EventController@confirmAssistance')
 	->middleware('auth:api');
+
+//Suggestions
+Route::post('/suggestions','SuggestionController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/suggestions','SuggestionController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/suggestions/{id}','SuggestionController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 // Activities
 Route::resource('activities','ActivityController');
@@ -103,9 +121,10 @@ Route::resource('suggestions','SuggestionController');
 Route::get('/companies', 'CompanyController@index')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,company3');
-Route::post('/companies','CompanyController@store')
+Route::post('/companies','CompanyController@store');
+Route::get('/company/{id}', 'CompanyController@show')
     ->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator,company');
+    ->middleware('scope:super-user,coordinator');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')

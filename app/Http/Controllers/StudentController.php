@@ -78,7 +78,7 @@ class StudentController extends Controller
             DB::rollback();
             $errorCode = $e->errorInfo[1];
             if ($errorCode == 1062) {
-                return makeResponseObject(null, "Ceoula, carné o correo ya existente en el sistema");
+                return makeResponseObject(null, "Cédula, carné o correo ya existente en el sistema");
             }
             return makeResponseObject(null, "No se pudo crear el usuario");
         } catch (\Exception $e) {

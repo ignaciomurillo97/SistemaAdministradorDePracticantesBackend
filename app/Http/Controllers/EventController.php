@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Activity;
+use App\Models\Suggestion;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\SuggestionController;
 
 class EventController extends Controller
 {
@@ -39,14 +42,14 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $response = response()->json(['data'=>'success', 'error' => NULL]);
         $validator = Validator::make($request->all(), [
            'name' => 'required|string',
            'date' => 'required|date',
            'start' => 'required',
            'finish' => 'required',
-           'type' => 'required|integer'
+           'type' => 'required|integer',
+           'activities' => 'array'
         ]);
         if($validator->fails()){
             $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
@@ -57,19 +60,23 @@ class EventController extends Controller
             $event->start = $request->start;
             $event->finish = $request->finish;
             if(Input::hasFile('image')){
-                $photo = Input::file('image');
-                $extension = $photo->getClientOriginalExtension();
-                $name = time().'.'.$extension;
-                $path = public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$name;
-                $photo->move(public_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR,$name);
-                $event->image = $path;
+                $event->image = saveBase64ImageToDisk($event->image);
 
             }
             else{
                 $event->image = $request->image;
             }
             $event->type_id = $request->type;
-            $event->save();
+            try{     
+                $event->save();
+                $request->event = $event->id;
+                $ActivityController = new ActivityController;
+                $response = $ActivityController->store($request);
+                //error_log(sizeof($request['activities']));
+            }
+            catch(\Exception $e){
+                $response =  response()->json(['data'=>'failed', 'error' => $e->getMessage()]);
+            }
         }
         return $response;
     }
@@ -84,7 +91,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         $activities = Activity::where('event_id', $id)->get();
-        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities] ,'error' => NULL]);
+        $suggestions = Suggestion::where('event_id', $id)->get();
+        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities, 'suggestions' => $suggestions] ,'error' => NULL]);
     }
 
     /**
@@ -121,9 +129,16 @@ class EventController extends Controller
         //
     }
 
-    public function confirmAssistance($event){
+    public function confirmAssistance(Request $request, $event){
+        $response = response()->json(['data'=>'success', 'error'=> NULL]);
         $user = auth()->guard('api')->user();
-        Event::confirmAssistance($user->id,$event);
-        return response()->json(['data'=> 'success' ,'error' => NULL]);
+        Event::confirmAssistance($user->person_id,$event);
+        if($user->scope_id == 4){
+            $request->request->add(['event' => $event,'person_id' =>$user->person_id]);
+            error_log($request);
+            $SuggestionController = new SuggestionController;
+            $response = $SuggestionController->store($request);
+        }
+        return $response;
     }
 }

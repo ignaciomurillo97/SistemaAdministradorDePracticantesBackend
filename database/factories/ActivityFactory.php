@@ -8,7 +8,7 @@ $factory->define(App\Models\Activity::class, function (Faker $faker) {
     	'duration'=> $faker->time($format = 'H:i:s', $max = 'now'),
     	'activityName'=> $faker->sentence($nbWords = 4, $variableNbWords = true),
     	'charlista'=>$faker->name,
-    	'remarks'=>$faker->optional()->text($maxNbChars = 200)
+    	'remarks'=>$faker->text($maxNbChars = 200)
     ];
 });
 

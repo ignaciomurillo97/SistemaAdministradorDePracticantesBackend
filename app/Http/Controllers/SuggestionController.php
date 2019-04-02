@@ -41,8 +41,7 @@ class SuggestionController extends Controller
         $validator = Validator::make($request->all(), [
             'event' => 'required|integer',
             'duration' => 'required',
-            'company' => 'required|digits:10',
-            'name' => 'required|integer',
+            'person_id' => 'required',
             'charlista' => 'required',
             'name' => 'required'
         ]);
@@ -51,7 +50,7 @@ class SuggestionController extends Controller
         } else {
             $suggestion = new Suggestion;
             $suggestion->duration = $request->duration;
-            $suggestion->company_id = $request->company;
+            $suggestion->person_id = $request->person_id;
             $suggestion->event_id = $request->event;
             $suggestion->charlista = $request->charlista;
             $suggestion->name = $request->name;
@@ -69,7 +68,9 @@ class SuggestionController extends Controller
      */
     public function show($id)
     {
-        //
+    	$suggest = Suggestion::find($id);
+        $company = Company::where('legal_id', $suggest->company_id)->get();
+        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities] ,'error' => NULL]);
     }
 
     /**

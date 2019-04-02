@@ -10,6 +10,8 @@ use App\Models\Activity;
 use App\Models\Event;
 use App\Models\EventType;
 use App\Models\Company;
+use App\Models\User;
+use Laravel\Passport\Passport;
 
 class ActivityTest extends TestCase
 {
@@ -21,6 +23,11 @@ class ActivityTest extends TestCase
      */
     public function test_GetAllActivities_RequestApi_ReturnsAllActivities()
     {
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+
     	$company = factory(Company::class)->create();
     	$eventType = factory(EventType::class)->create();
     	$event = factory(Event::class)->create([
@@ -39,9 +46,15 @@ class ActivityTest extends TestCase
 
     public function test_createActivity_POSTRequest_AppearsInDatabase() {
     	// Add Event Type
+        Passport::actingAs(
+            User::where('scope_id', '1')->first(),
+            ['super-user']
+        );
+
     	$this->json('POST', "/api/eventTypes", ['name' => 'eventType']);
     	$result = $this->json('GET', '/api/eventTypes');
         $type_id = json_decode($result->getContent())->data[0]->id;
+        
         // Add Event
         $this->json('POST', "/api/events", [
         	'name' => 'event', 
@@ -52,10 +65,15 @@ class ActivityTest extends TestCase
         	'type'=>$type_id]);
         $result = $this->json('GET', '/api/events');
         $event_id = json_decode($result->getContent())->data[0]->id;
+        
         // Add Company
-    	$this->json('POST', "/api/companies", ['name' => 'ITCR for testing', 'legal_id'=>'3089201293', 'address'=>'Alajuela']);
-    	// Add Activity to Event
-        $this->json('POST', "/api/activities", ['start' => '12:10:23', 'finish'=>'01:10:23', 'event'=>$event_id, 'company'=>'3089201293']);
-        $this->assertDatabaseHas('activity', ['start' => '12:10:23']);
+    	$this->json('POST', "/api/companies", ['name' => 'ITCR for testing', 'legal_id'=>'3089201293', 'address'=>'Alajuela','person_id'=>User::where('scope_id', '4')->first()->person_id]);
+        
+        // Add Activity to Event
+        $this->json('POST', "/api/activities", ['duration'=>'30:00','event'=>$event_id,'company'=>'3089201293','activityName'=>'Como hacer su CV','charlista'=>'Pedrito Navarro','remarks'=>'Necesito laptop, video beam y se realizaran entrevistas']);
+
+        
+        // Assertion
+        $this->assertDatabaseHas('activities', ['activityName' => 'Como hacer su CV']);
     }
 }
