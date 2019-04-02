@@ -56,7 +56,7 @@ class EventController extends Controller
         }else{
             $event = new Event;
             $event->name = $request->name;
-            $event->eventDate = $request->date;
+            $event->eventDate = $request->eventDate;
             $event->start = $request->start;
             $event->finish = $request->finish;
             if(Input::hasFile('image')){
@@ -66,7 +66,7 @@ class EventController extends Controller
             else{
                 $event->image = $request->image;
             }
-            $event->type_id = $request->type;
+            $event->type_id = $request->type_id;
             try{     
                 $event->save();
                 $request->event = $event->id;
