@@ -51,9 +51,7 @@ Route::delete('/site/{id}', "SiteController@destroy")
 Route::get('/students', 'StudentController@all')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
-Route::post('/student', "StudentController@store")
-    ->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator,student');
+Route::post('/student', "StudentController@store");
 Route::get('/students/aproved', "StudentController@filterByStatus")
     ->defaults('status', 1)
     ->middleware('auth:api')
