@@ -48,8 +48,9 @@ class StudentController extends Controller
      */
     public function filterByStatus($status)
     {
-        $students = Student::where('status', $status)->get(); // aprobado
-        return makeResponseObject(StudentResource::collection($students), null);
+        $students = DB::table('people')->join('students', 'id', '=', 'person_id')->select('people.id','people.name','people.lastName','people.secondLastName','people.telephone','students.id')->where('students.status', $status)->get(); // aprobado
+        return response()->json(['data'=> $students ,'error' => NULL]);
+        // return makeResponseObject(StudentResource::collection($students), null);
     }
 
     /**
