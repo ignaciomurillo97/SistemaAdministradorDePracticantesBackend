@@ -80,10 +80,10 @@ class StudentController extends Controller
             if ($errorCode == 1062) {
                 return makeResponseObject(null, "Cédula, carné o correo ya existente en el sistema");
             }
+            return $e;
             return makeResponseObject(null, "No se pudo crear el usuario");
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
             return makeResponseObject(null, "Error del servidor");
         }
 
@@ -107,6 +107,7 @@ class StudentController extends Controller
         $userData["person_id"] = $personData["id"];
         $studentData["person_id"] = $personData["id"];
         $studentData["status"] = 1; // Pendiente
+        $userData["scope_id"] = 3;
     }
 
     /**
