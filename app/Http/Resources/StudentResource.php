@@ -19,7 +19,10 @@ class StudentResource extends JsonResource
             'person_id' => $this->person_id,
             'career_id' => $this->site_id,
             'site_id' => $this->career_id,
-            'status' => $this->status
+            'status' => $this->status,
+            'semester' => $this->semester,
+            'image' => $this->image,
+            'person' => $this->person
         ];
     }
 }

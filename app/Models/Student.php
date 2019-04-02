@@ -9,7 +9,7 @@ class Student extends Model
     public $incrementing = false;
 
     public function person () {
-        return $this->hasOne('App\Models\Person');
+        return $this->belongsTo('App\Models\Person');
     }
 
     public function semester () {
