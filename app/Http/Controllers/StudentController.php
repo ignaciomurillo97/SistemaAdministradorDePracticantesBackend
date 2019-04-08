@@ -109,6 +109,7 @@ class StudentController extends Controller
         $studentData["person_id"] = $personData["id"];
         $studentData["status"] = 1; // Pendiente
         $userData["scope_id"] = 3;
+        $userData["password"] = bcrypt($userData["password"]);
     }
 
     /**

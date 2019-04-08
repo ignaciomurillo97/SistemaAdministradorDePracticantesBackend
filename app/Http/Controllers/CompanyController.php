@@ -81,6 +81,7 @@ class CompanyController extends Controller
         $userData["person_id"] = $personData["id"];
         $userData["scope_id"] = 4; // Company scoppe id
         $companyData["person_id"] = $personData["id"];
+        $userData["password"] = bcrypt($userData["password"]);
     }
 
     /**
