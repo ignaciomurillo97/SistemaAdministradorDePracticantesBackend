@@ -97,6 +97,9 @@ Route::get('/events','EventController@index')
 Route::get('/events/{id}','EventController@show')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student,company');
+Route::post('/events/{id}','EventController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 Route::resource('eventTypes','EventTypeController');
 Route::get('/events/confirm/{event}','EventController@confirmAssistance')
@@ -114,7 +117,10 @@ Route::get('/suggestions/{id}','SuggestionController@show')
     ->middleware('scope:super-user,coordinator,company');
 
 // Activities
-Route::resource('activities','ActivityController');
+Route::post('/activities','ActivityController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+//Route::resource('activities','ActivityController');
 Route::resource('suggestions','SuggestionController');
 
 // Companies
