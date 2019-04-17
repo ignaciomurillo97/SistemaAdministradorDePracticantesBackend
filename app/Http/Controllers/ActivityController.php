@@ -40,12 +40,14 @@ class ActivityController extends Controller
         $response = response()->json(['data'=>'success', 'error' => NULL]);
         $hours = $request['activities'];
         /*Ciclo a recorrer las actividades*/
-        for($i = 0; $i < sizeof($hours) - 1; $i += 2){
-            $activity = new Activity;
-            $activity->start = $hours[$i];
-            $activity->finish = $hours[$i + 1];
-            $activity->event_id = $request->event;
-            $activity->save();
+        if($hours){
+            for($i = 0; $i < sizeof($hours) - 1; $i += 2){
+                $activity = new Activity;
+                $activity->start = $hours[$i];
+                $activity->finish = $hours[$i + 1];
+                $activity->event_id = $request->event;
+                $activity->save();
+            }
         }
         return $response;
     }

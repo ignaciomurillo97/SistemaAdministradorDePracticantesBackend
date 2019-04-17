@@ -48,18 +48,8 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $response = response()->json(['data'=>'success', 'error' => NULL]);
-        $validator = Validator::make($request->all(), [
-           'name' => 'required|string',
-           'date' => 'required|date',
-           'start' => 'required',
-           'finish' => 'required',
-           'type' => 'required|integer',
-           'activities' => 'array'
-        ]);
-        if($validator->fails()){
-            $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
-        }else{
+        $response = self::validateData($request);
+        if(!$response->getData()->error){//Si error es null
             $event = new Event;
             $event->name = $request->name;
             $event->eventDate = $request->eventDate;
@@ -109,7 +99,7 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        //
+                
     }
 
     /**
@@ -121,7 +111,37 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $response = self::validateData($request);
+        $event = Event::find($id);
+        if($event){//if the event exists
+            if(!$response->getData()->error){//if the request is correct
+                $event->name = $request->name;
+                $event->eventDate = $request->eventDate;
+                $event->start = $request->start;
+                $event->finish = $request->finish;
+                if(Input::hasFile('image')){
+                    $event->image = saveBase64ImageToDisk($event->image);
+                }
+                else{
+                    $event->image = $request->image;
+                }
+                $event->type_id = $request->type_id;
+                try{     
+                    $event->save();
+                    $request->event = $event->id;
+                    $ActivityController = new ActivityController;
+                    $response = $ActivityController->store($request);
+                    //error_log(sizeof($request['activities']));
+                }
+                catch(\Exception $e){
+                    $response =  response()->json(['data'=>'failed', 'error' => $e->getMessage()]);
+                }
+            }
+
+        }else{
+            $response = response()->json(['data'=>'failed', 'error'=> 'event does not exist']);
+        }
+        return $response;
     }
 
     /**
@@ -144,6 +164,22 @@ class EventController extends Controller
             error_log($request);
             $SuggestionController = new SuggestionController;
             $response = $SuggestionController->store($request);
+        }
+        return $response;
+    }
+
+    public function validateData(Request $request){
+        $response = response()->json(['data'=>'success', 'error' => NULL]);
+        $validator = Validator::make($request->all(), [
+           'name' => 'required|string',
+           'eventDate' => 'required|date',
+           'start' => 'required',
+           'finish' => 'required',
+           'type_id' => 'required|integer',
+           'activities' => 'array'
+        ]);
+        if($validator->fails()){
+            $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
         }
         return $response;
     }
