@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\Activity;
 use App\Models\Suggestion;
@@ -20,7 +21,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $events = Event::all()->filter(function($event) {
+           $day = new Carbon($event->eventDate);
+           if($day->subDays(3) > Carbon::now()->toDateString()){
+            return $event;
+           }
+        });
         return response()->json(['data'=> $events,'error' => NULL]);
     }
 
