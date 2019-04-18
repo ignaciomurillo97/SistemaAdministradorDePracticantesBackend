@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Person;
 use App\Models\User;
+use App\Models\Career;
+use App\Models\Site;
+use App\Models\CareerAndSitePerCompany;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\CompanyResource;
 use Illuminate\Support\Facades\Input;
@@ -128,5 +131,34 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function requestRegistrationToCareer(Request $request) {
+        $careerId = $request->input('career_id');
+        $siteId = $request->input('site_id');
+
+        $company = auth()->guard('api')->user()->person->company;
+
+        if (!existsInDB(Career::Class, $careerId)) {
+            return makeResponseObject(null, 'career does not exist');
+        }
+        if (!existsInDB(Site::Class ,$siteId)) {
+            return makeResponseObject(null, 'site does not exist');
+        }
+
+        $data = [
+            'career_id' => $careerId,
+            'site_id' => $siteId,
+            'company_id' => $company->legal_id,
+            'status' => 1
+        ];
+        $careerAndSiteRelation = new CareerAndSitePerCompany($data);
+
+        //if ($careerAndSiteRelation->exists()) {
+        //    return makeResponseObject(null, 'Una solicitud ya ha sido enviada');
+        //}
+
+        $careerAndSiteRelation->save();
+        return makeResponseObject('success', null);
     }
 }

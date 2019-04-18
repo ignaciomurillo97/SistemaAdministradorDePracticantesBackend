@@ -125,6 +125,9 @@ Route::post('/companies','CompanyController@store');
 Route::get('/company/{id}', 'CompanyController@show')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::post('/company/site-career-request', 'CompanyController@requestRegistrationToCareer')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,company');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')

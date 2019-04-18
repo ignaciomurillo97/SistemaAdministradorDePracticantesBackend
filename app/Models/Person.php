@@ -20,6 +20,10 @@ class Person extends Model
         return $this->hasOne('App\Models\Student');
     }
 
+    public function company() {
+        return $this->hasOne('App\Models\Company');
+    }
+
     protected $fillable = [
         'id', 'name', 'lastName', 'secondLastName', 'gender_id', 'birthday', 'telephone'
     ];
