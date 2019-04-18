@@ -159,11 +159,10 @@ class EventController extends Controller
         $response = response()->json(['data'=>'success', 'error'=> NULL]);
         $user = auth()->guard('api')->user();
         Event::confirmAssistance($user->person_id,$event);
-        if($user->scope_id == 4){
+        if($user->scope_id == 4 && count($request->all()) != 0){//if user is a company and request has data
             $request->request->add(['event' => $event,'person_id' =>$user->person_id]);
-            error_log($request);
             $SuggestionController = new SuggestionController;
-            $response = $SuggestionController->store($request);
+            $response = $SuggestionController->store($request);             
         }
         return $response;
     }
