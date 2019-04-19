@@ -7,5 +7,5 @@ function getInstanceFromDB($class) {
 
 function existsInDB ($class, $id) {
     $instance = $class::find($id);
-    return $instance->exists();
+    return isset($instance);
 }

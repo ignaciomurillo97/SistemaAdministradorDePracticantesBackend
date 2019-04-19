@@ -154,9 +154,14 @@ class CompanyController extends Controller
         ];
         $careerAndSiteRelation = new CareerAndSitePerCompany($data);
 
-        //if ($careerAndSiteRelation->exists()) {
-        //    return makeResponseObject(null, 'Una solicitud ya ha sido enviada');
-        //}
+        $queryResult = CareerAndSitePerCompany::where('career_id', $careerId)
+            ->where('site_id', $siteId)
+            ->where('company_id', $company->legal_id)
+            ->first();
+            
+        if (isset($queryResult)) {
+            return makeResponseObject(null, 'Una solicitud ya ha sido enviada');
+        }
 
         $careerAndSiteRelation->save();
         return makeResponseObject('success', null);
