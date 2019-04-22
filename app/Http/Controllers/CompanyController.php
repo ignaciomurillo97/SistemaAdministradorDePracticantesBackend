@@ -166,4 +166,22 @@ class CompanyController extends Controller
         $careerAndSiteRelation->save();
         return makeResponseObject('success', null);
     }
+
+    public function getRegistrationRequest (Request $request) {
+        return CareerAndSitePerCompany::all();
+    }
+
+    public function aproveRegistration (Request $request, int $id) {
+        $relation = CareerAndSitePerCompany::find($id);
+        $relation->status = 2;
+        $relation->save();
+        return makeResponseObject('success', null);
+    }
+
+    public function denyRegistration (Request $request, int $id) {
+        $relation = CareerAndSitePerCompany::find($id);
+        $relation->status = 3;
+        $relation->save();
+        return makeResponseObject('success', null);
+    }
 }
