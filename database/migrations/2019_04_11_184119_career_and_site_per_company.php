@@ -18,7 +18,7 @@ class CareerAndSitePerCompany extends Migration
             $table->bigInteger('career_id');
             $table->bigInteger('site_id');
             $table->integer('company_id');
-            $table->integer('status');
+            $table->enum('status', ['pending', 'aproved', 'denied']);
             $table->timestamps();
             $table->unique(['career_id', 'site_id', 'company_id'], 'unique_relation_CnSperComp');
         });
