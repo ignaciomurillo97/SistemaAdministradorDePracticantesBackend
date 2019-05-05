@@ -18,7 +18,7 @@ class CreateSuggestionsTable extends Migration
             $table->string("name");
             $table->time('duration');
             $table->string("charlista");
-            $table->text("remarks");
+            $table->text("remarks")->nullable();
             $table->bigInteger('person_id');
             //$table->foreign('company')->references('person_id')->on('companies');
             $table->unsignedBigInteger('event_id');

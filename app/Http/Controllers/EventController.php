@@ -156,13 +156,26 @@ class EventController extends Controller
     }
 
     public function confirmAssistance(Request $request, $event){
+        $user = auth()->guard('api')->user();//gets the current user
         $response = response()->json(['data'=>'success', 'error'=> NULL]);
-        $user = auth()->guard('api')->user();
-        Event::confirmAssistance($user->person_id,$event);
         if($user->scope_id == 4 && count($request->all()) != 0){//if user is a company and request has data
-            $request->request->add(['event' => $event,'person_id' =>$user->person_id]);
-            $SuggestionController = new SuggestionController;
-            $response = $SuggestionController->store($request);             
+            $validator = Validator::make($request->all(), [//verifies if the request is correct
+               'duration' => 'required|string',
+               'charlista' => 'required|string',
+               'name' => 'required|string',
+               'remarks' => 'string',
+            ]);
+            if($validator->fails()){//The request was incorrect
+                $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
+            }
+            if(!$response->getData()->error){
+                $request->request->add(['event' => $event,'person_id' =>$user->person_id]);
+                $SuggestionController = new SuggestionController;
+                $response = $SuggestionController->store($request);//creates the suggestion
+            }             
+        }
+        if(!$response->getData()->error){//If user is not a company
+            Event::confirmAssistance($user->person_id,$event);
         }
         return $response;
     }
