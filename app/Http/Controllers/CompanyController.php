@@ -150,7 +150,7 @@ class CompanyController extends Controller
             'career_id' => $careerId,
             'site_id' => $siteId,
             'company_id' => $company->legal_id,
-            'status' => 1
+            'status' => 'pending'
         ];
         $careerAndSiteRelation = new CareerAndSitePerCompany($data);
 
@@ -173,14 +173,14 @@ class CompanyController extends Controller
 
     public function aproveRegistration (Request $request, int $id) {
         $relation = CareerAndSitePerCompany::find($id);
-        $relation->status = 2;
+        $relation->status = 'aproved';
         $relation->save();
         return makeResponseObject('success', null);
     }
 
     public function denyRegistration (Request $request, int $id) {
         $relation = CareerAndSitePerCompany::find($id);
-        $relation->status = 3;
+        $relation->status = 'denied';
         $relation->save();
         return makeResponseObject('success', null);
     }

@@ -127,7 +127,7 @@ Route::get('/company/{id}', 'CompanyController@show')
     ->middleware('scope:super-user,coordinator');
 Route::put('/company/site-career-request', 'CompanyController@requestRegistrationToCareer')
     ->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator,company');
+    ->middleware('scope:company');
 Route::get('/companies/requests', 'CompanyController@getRegistrationRequest')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
