@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\Activity;
 use App\Models\Suggestion;
+use App\Models\Company;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\ActivityController;
@@ -86,9 +88,25 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        $activities = Activity::where('event_id', $id)->get();
-        $suggestions = Suggestion::where('event_id', $id)->get();
-        return response()->json(['data'=> ['event'=>$event,'activities'=>$activities, 'suggestions' => $suggestions] ,'error' => NULL]);
+        if($event){
+            $activities = Activity::where('event_id', $id)->get();//all activities
+            $companies = array();
+            $peopleConfirmed = Event::peopleConfirmed($id);//all people confirmed to current event
+            foreach ($peopleConfirmed as $comfirmed) {
+                $personConfirmed = User::where('person_id', $comfirmed->person_id)->get();
+                if($personConfirmed[0]->scope_id == 4){//check if the person is a company
+                    $company = Company::where('person_id',$comfirmed->person_id)->get();//gets company info
+                    if(count($company) != 0){
+                        $company[0]->suggestions = Suggestion::where('person_id', $comfirmed->person_id)->get();
+                    }
+                    array_push($companies, $company);
+                }
+            }
+            $response = response()->json(['data'=> ['event'=>$event,'activities'=>$activities, 'companies' => $companies] ,'error' => NULL]);
+        }else{
+            $response = response()->json(['data'=> 'failed' ,'error' => 'Event does not exist']);
+        }
+        return $response;
     }
 
     /**
@@ -158,7 +176,10 @@ class EventController extends Controller
     public function confirmAssistance(Request $request, $event){
         $user = auth()->guard('api')->user();//gets the current user
         $response = response()->json(['data'=>'success', 'error'=> NULL]);
-        if($user->scope_id == 4 && count($request->all()) != 0){//if user is a company and request has data
+        if(Event::hasConfirmed($user->person_id)){//Verifies that the current user has confirmed
+            $response = response()->json(['data'=>'failed', 'error'=> 'Person has confirmed already']);
+        }
+        else if($user->scope_id == 4 && count($request->all()) != 0){//if user is a company and request has data
             $validator = Validator::make($request->all(), [//verifies if the request is correct
                'duration' => 'required|string',
                'charlista' => 'required|string',
@@ -173,9 +194,6 @@ class EventController extends Controller
                 $SuggestionController = new SuggestionController;
                 $response = $SuggestionController->store($request);//creates the suggestion
             }             
-        }
-        else if(Event::hasConfirmed($user->person_id)){//Verifies that the current user has confirmed
-            $response = response()->json(['data'=>'failed', 'error'=> 'Person has confirmed already']);
         }
 
         if(!$response->getData()->error){//If user is not a company

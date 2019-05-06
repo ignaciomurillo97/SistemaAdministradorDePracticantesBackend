@@ -20,4 +20,9 @@ class Event extends Model
     	$result = DB::table('people_per_event')->select('confirmed')->where('person_id','=',$user)->get();
     	return count($result) != 0;
     }
+
+    public static function peopleConfirmed($id){
+    	$result = DB::table('people_per_event')->select('person_id')->where('event_id','=',$id)->get();
+    	return $result;
+    }
 }
