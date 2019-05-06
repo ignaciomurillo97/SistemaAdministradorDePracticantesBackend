@@ -131,6 +131,18 @@ Route::post('/companies','CompanyController@store');
 Route::get('/company/{id}', 'CompanyController@show')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::put('/company/site-career-request', 'CompanyController@requestRegistrationToCareer')
+    ->middleware('auth:api')
+    ->middleware('scope:company');
+Route::get('/companies/requests', 'CompanyController@getRegistrationRequest')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/companies/requests/{id}/aprove', 'CompanyController@aproveRegistration')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/companies/requests/{id}/deny', 'CompanyController@denyRegistration')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')
