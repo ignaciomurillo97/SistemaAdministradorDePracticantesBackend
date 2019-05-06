@@ -168,12 +168,16 @@ class EventController extends Controller
             if($validator->fails()){//The request was incorrect
                 $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
             }
-            if(!$response->getData()->error){
+            if(!$response->getData()->error){//request was correct
                 $request->request->add(['event' => $event,'person_id' =>$user->person_id]);
                 $SuggestionController = new SuggestionController;
                 $response = $SuggestionController->store($request);//creates the suggestion
             }             
         }
+        else if(Event::hasConfirmed($user->person_id)){//Verifies that the current user has confirmed
+            $response = response()->json(['data'=>'failed', 'error'=> 'Person has confirmed already']);
+        }
+
         if(!$response->getData()->error){//If user is not a company
             Event::confirmAssistance($user->person_id,$event);
         }

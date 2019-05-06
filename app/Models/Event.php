@@ -15,4 +15,9 @@ class Event extends Model
     	DB::table('people_per_event')->insert(
     		['person_id' => $user, 'event_id' => $event, 'confirmed' => true]);
     }
+
+    public static function hasConfirmed($user){
+    	$result = DB::table('people_per_event')->select('confirmed')->where('person_id','=',$user)->get();
+    	return count($result) != 0;
+    }
 }
