@@ -11,8 +11,10 @@ use App\Models\Career;
 use App\Models\Site;
 use App\Models\CareerAndSitePerCompany;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\CompanyResource;
 use Illuminate\Support\Facades\Input;
+
+use App\Http\Resources\CompanyResource;
+use App\Http\Resources\CareerAndSitePerCompanyResource;
 
 class CompanyController extends Controller
 {
@@ -168,7 +170,11 @@ class CompanyController extends Controller
     }
 
     public function getRegistrationRequest (Request $request) {
-        return CareerAndSitePerCompany::all();
+        $company = auth()->guard('api')->user()->person->company;
+
+        return new CareerAndSitePerCompanyResource(
+            CareerAndSitePerCompany::where('company_id', $company->legal_id)->get()
+        );
     }
 
     public function aproveRegistration (Request $request, int $id) {
