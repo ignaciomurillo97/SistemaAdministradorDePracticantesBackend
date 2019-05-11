@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Models\PasswordReset;
 use Config;
 use App\Helpers\ResponseWrapper;
 
@@ -50,6 +51,35 @@ class AuthenticationController extends Controller
             ];
             return response(makeResponseObject($data, null), 200);
         }
+    }
 
+    public function requestPasswordReset(Request $request) {
+        $email = $request->input('email');
+        $token = $token = bin2hex(random_bytes(16));
+
+        if (!User::where('email', $email)->exists()) {
+            return makeResponseObject(null, 'Email does not exist');
+        }
+
+        try {
+            $reset = PasswordReset::create([
+                'email' => $email,
+                'token' => $token
+            ]);
+
+            $reset->save();
+        } catch (\Exception $e) {
+            return makeResponseObject(null, 'Failed to reset password');
+        }
+
+        // TODO: Enviar correo a usuario.
+        // TODO: Si el correo no se envia, hacer rollback al token.
+
+        return makeResponseObject('success', null);
+    }
+    
+    public function resetPassword(Request $request) {
+        return makeResponseObject(null, 'TBD');
+        dd(config('auth.passwords.users.expire'));
     }
 }

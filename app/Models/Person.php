@@ -24,6 +24,10 @@ class Person extends Model
         return $this->hasOne('App\Models\Company');
     }
 
+    public function coordinator() {
+        return $this->hasOne('App\Models\Coordinator');
+    }
+
     protected $fillable = [
         'id', 'name', 'lastName', 'secondLastName', 'gender_id', 'birthday', 'telephone'
     ];

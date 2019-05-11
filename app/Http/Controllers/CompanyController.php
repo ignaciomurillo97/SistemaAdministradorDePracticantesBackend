@@ -177,17 +177,4 @@ class CompanyController extends Controller
         );
     }
 
-    public function aproveRegistration (Request $request, int $id) {
-        $relation = CareerAndSitePerCompany::find($id);
-        $relation->status = 'aproved';
-        $relation->save();
-        return makeResponseObject('success', null);
-    }
-
-    public function denyRegistration (Request $request, int $id) {
-        $relation = CareerAndSitePerCompany::find($id);
-        $relation->status = 'denied';
-        $relation->save();
-        return makeResponseObject('success', null);
-    }
 }
