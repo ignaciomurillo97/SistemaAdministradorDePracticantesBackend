@@ -150,7 +150,7 @@ Route::put('/coordinator/companies/requests/{id}/deny', 'CoordinatorController@d
 
 //Password
 Route::post('/password/request-reset', 'AuthenticationController@requestPasswordReset');
-Route::get('/password/reset', 'AuthenticationController@reset');
+Route::post('/password/reset/{token}', 'AuthenticationController@resetPassword');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')

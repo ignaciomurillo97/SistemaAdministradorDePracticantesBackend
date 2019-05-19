@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Config;
+use Hash;
+use Carbon\Carbon;
+use App\Helpers\EmailService;
+
 use App\Models\User;
 use App\Models\PasswordReset;
-use Config;
 use App\Helpers\ResponseWrapper;
 
 class AuthenticationController extends Controller
@@ -64,7 +68,8 @@ class AuthenticationController extends Controller
         try {
             $reset = PasswordReset::create([
                 'email' => $email,
-                'token' => $token
+                'token' => $token,
+                'created_at' => Carbon::now()
             ]);
 
             $reset->save();
@@ -72,14 +77,36 @@ class AuthenticationController extends Controller
             return makeResponseObject(null, 'Failed to reset password');
         }
 
-        // TODO: Enviar correo a usuario.
-        // TODO: Si el correo no se envia, hacer rollback al token.
+        EmailService::resetPassword('ignaciomurillo97@gmail.com', 'Nacho', $token);
 
         return makeResponseObject('success', null);
     }
     
-    public function resetPassword(Request $request) {
-        return makeResponseObject(null, 'TBD');
-        dd(config('auth.passwords.users.expire'));
+    public function resetPassword(string $token, Request $request) {
+        $email = $request->input('email');
+        $new_password = $request->input('password');
+        $expiration_time = config('auth.passwords.users.expire');
+        $resetRequest = PasswordReset::where([['email', $email], ['token', $token]])->orderBy('created_at')->first();
+
+        if (!$resetRequest) {
+            return makeResponseObject(null, 'Invalid token');
+        }
+
+        if ($this->isTokenExpired(Carbon::parse($resetRequest->created_at), $expiration_time)) {
+            return makeResponseObject(null, 'Password reset token has expired');
+        }
+
+        $user = User::where('email', $email)->first();
+        $user->password = bcrypt($new_password);
+        $user->save();
+
+        PasswordReset::where('email', $email)->delete();
+
+        return makeResponseObject('success', null);
+    }
+
+    public function isTokenExpired($startDate, $expirationInDays){
+        $dateDiff = $startDate->diffInDays(Carbon::now());
+        return $dateDiff > $expirationInDays;
     }
 }
