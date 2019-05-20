@@ -79,6 +79,9 @@ Route::post('/student/{id}/reject', "StudentController@rejectStudent")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+// Person
+Route::get('/person/{id}', "PersonController@index");
+
 // Catalogs
 Route::get('/catalog/gender', "CatalogController@getGender");
 Route::get('/catalog/semester', "CatalogController@getSemester");
