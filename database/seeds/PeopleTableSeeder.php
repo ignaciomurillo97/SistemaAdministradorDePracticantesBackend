@@ -16,6 +16,7 @@ class PeopleTableSeeder extends Seeder
         });
         $this->createStudents();
         $this->createCompanies();
+        $this->createCoordinator();
         $this->createEventTypesAndEvents();
     }
 
@@ -30,6 +31,13 @@ class PeopleTableSeeder extends Seeder
         factory(App\Models\Person::class, 10)->create()->each(function($person){
             $person->user()->save(factory(App\Models\User::class)->make(['scope_id'=>'4']));
             factory(App\Models\Company::class)->create(['person_id'=>$person]);
+        });
+    }
+
+    private function createCoordinator() {
+        factory(App\Models\Person::class, 10)->create()->each(function($person){
+            $person->user()->save(factory(App\Models\User::class)->make(['scope_id'=>'2']));
+            factory(App\Models\Coordinator::class)->create(['person_id'=>$person]);
         });
     }
 

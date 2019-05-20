@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use App\Controller\AuthenticationController;
 
@@ -136,13 +135,22 @@ Route::put('/company/site-career-request', 'CompanyController@requestRegistratio
     ->middleware('scope:company');
 Route::get('/companies/requests', 'CompanyController@getRegistrationRequest')
     ->middleware('auth:api')
-    ->middleware('scope:super-user,coordinator');
-Route::put('/companies/requests/{id}/aprove', 'CompanyController@aproveRegistration')
+    ->middleware('scope:company');
+
+//Coordinator
+Route::get('/coordinator/companies/requests', 'CoordinatorController@getCompanyRegistrationRequest')
+    ->middleware('auth:api')
+    ->middleware('scope:coordinator');
+Route::put('/coordinator/companies/requests/{id}/aprove', 'CoordinatorController@aproveCompanyRegistration')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::put('/companies/requests/{id}/deny', 'CompanyController@denyRegistration')
+Route::put('/coordinator/companies/requests/{id}/deny', 'CoordinatorController@denyCompanyRegistration')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+
+//Password
+Route::post('/password/request-reset', 'AuthenticationController@requestPasswordReset');
+Route::post('/password/reset/{token}', 'AuthenticationController@resetPassword');
 
 //Mails
 Route::get('/mail/send/{mail}','EmailController@send')

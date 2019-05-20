@@ -20,7 +20,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'person_id' => 0, // Place holder, se reemplaza en el seeder cuando se crea el usuario
-        'scope_id' => $faker->randomElement([1, 2]), // no crea estudiantes ni empresas (scopes 3 y 4) ya que necesitan clases adicionales.
+        'scope_id' => $faker->randomElement([1]), // solo crea administradores ya que el resto de tipos de usuario requiere clases extra por lo que son creados en el factory respectivo
         'remember_token' => Str::random(10),
     ];
 });
