@@ -170,4 +170,5 @@ Route::put('/semester/{id}', 'SemesterController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
-Route::post('/upload','DocumentController@store');
+Route::post('/document','DocumentController@store');
+Route::delete('/document/{fileName}','DocumentController@destroy');
