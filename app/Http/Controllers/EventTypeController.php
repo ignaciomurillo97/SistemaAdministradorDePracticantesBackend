@@ -62,6 +62,8 @@ class EventTypeController extends Controller
     public function show($id)
     {
         //
+        $eventType = EventType::find($id);
+        return response()->json(['data' => $eventType, 'error' => NULL]);
     }
 
     /**
@@ -84,7 +86,16 @@ class EventTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $eventType = EventType::find($id);
+            if ($eventType != null){
+                $eventType->update($request->all());
+                return makeResponseObject("Success", null);
+            }
+            return makeResponseObject("Failed", "El tipo de evento no existe");
+        } catch (\Exception $e) {
+            return makeResponseObject(null, $e->getMessage);
+        }
     }
 
     /**
@@ -95,6 +106,15 @@ class EventTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $eventType = EventType::find($id);
+            if ($eventType != null) {
+                $eventType->delete();
+                return makeResponseObject("Success", null);
+            }
+            return makeResponseObject("Failed", "El tipo de evento no existe");
+        } catch (\Exception $e) {
+            return makeResponseObject(null, $e->getMessage());
+        }
     }
 }

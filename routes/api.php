@@ -153,3 +153,4 @@ Route::get('/mail/notify','EmailController@notifyEvent')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+Route::post('/upload','DocumentController@store');
