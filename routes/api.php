@@ -153,4 +153,21 @@ Route::get('/mail/notify','EmailController@notifyEvent')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+//Semester
+Route::get('/semester', 'SemesterController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/semester', 'SemesterController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/semester/{id}', 'SemesterController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/semester/{id}', 'SemesterController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/semester/{id}', 'SemesterController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
 Route::post('/upload','DocumentController@store');
