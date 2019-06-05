@@ -166,8 +166,25 @@ Route::get('/semester/{id}', 'SemesterController@show')
 Route::put('/semester/{id}', 'SemesterController@update')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
-Route::put('/semester/{id}', 'SemesterController@destroy')
+Route::delete('/semester/{id}', 'SemesterController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
 Route::post('/upload','DocumentController@store');
+
+// Professor
+Route::get('/professor', 'ProfessorController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/professor', 'ProfessorController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/professor/{id}', 'ProfessorController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/professor/{id}', 'ProfessorController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/professor/{id}', 'ProfessorController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
