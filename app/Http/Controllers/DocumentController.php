@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;
 
 class DocumentController extends Controller
 {
@@ -14,18 +16,21 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        error_log("Hola request");
-        /*if(Input::hasFile('file')){
+        $response = response()->json(['data'=>'failed', 'error'=> 'No file to upload']);
+        if(Input::hasFile('file')){
             $photo = Input::file('file');
             $extension = $photo->getClientOriginalExtension();
             $name = time().'.'.$extension;
-            $photo->move(public_path().'\images\\',$name);*/
+            $photo->move(public_path().'\images\\',$name);
+            $response = response()->json(['data'=>$name, 'error'=> NULL]);
+            //error_log($name);
             /*$photo = new Photo();
             $photo->route = 'photos/'.$name;
             error_log($name);
             $photo->report = $report->id;
             $photo->save();*/
         }
+        return $response;
     }
 
     /**
@@ -36,7 +41,7 @@ class DocumentController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -45,8 +50,14 @@ class DocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($fileName)
     {
-        //
+        $response = response()->json(['data'=>'failed', 'error'=> 'No file to delete']);
+        $path = public_path().'\images\\'.$fileName;
+        if(File::exists($path)){
+            File::delete($path);
+            $response = response()->json(['data'=>'success', 'error'=> NULL]);
+        }
+        return $response;
     }
 }

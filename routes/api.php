@@ -170,7 +170,10 @@ Route::delete('/semester/{id}', 'SemesterController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+
 Route::post('/upload','DocumentController@store');
+Route::post('/document','DocumentController@store');
+Route::delete('/document/{fileName}','DocumentController@destroy');
 
 // Professor
 Route::get('/professor', 'ProfessorController@index')
@@ -188,3 +191,4 @@ Route::put('/professor/{id}', 'ProfessorController@update')
 Route::delete('/professor/{id}', 'ProfessorController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+
