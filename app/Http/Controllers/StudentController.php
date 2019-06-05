@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\User;
+use App\Models\Document;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Input;
 
@@ -191,5 +192,12 @@ class StudentController extends Controller
         $student->professorAssigned = $professorID;
         $student->save();
         return response()->json(['data'=> $var ,'error' => NULL]);
+    }
+
+    public function assignCharterGrade(Request $request, int $id)
+    {
+        $personId = Student::select('person_id')->where('id', $studentID)->get();
+        Document::where('person_id', $personId)->update('grade', $request->all());
+        return makeResponseObject('Success', NULL);
     }
 }

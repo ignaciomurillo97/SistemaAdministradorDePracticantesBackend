@@ -17,6 +17,7 @@ class CreateFilesPerPersonTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('person_id');
             $table->string('name');
+            $table->integer('grade');
             $table->timestamps();
         });
     }
