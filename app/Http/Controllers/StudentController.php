@@ -196,8 +196,15 @@ class StudentController extends Controller
 
     public function assignCharterGrade(Request $request, int $id)
     {
-        $personId = Student::select('person_id')->where('id', $studentID)->get();
-        Document::where('person_id', $personId)->update('grade', $request->all());
+        $docu = Document::find($id);
+        $docu->grade = $request->grade;
+        $docu->save();
         return makeResponseObject('Success', NULL);
+    }
+
+    public function showCharterGrade(){
+        $person_id = auth()->guard('api')->user()->person_id;
+        $docu = Document::select('grade')->where('person_id',$person_id)->get();
+        return response()->json(['data'=> $docu ,'error' => NULL]);
     }
 }

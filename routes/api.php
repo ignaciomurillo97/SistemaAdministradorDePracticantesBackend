@@ -203,4 +203,5 @@ Route::delete('/professor/{id}', 'ProfessorController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
-Route::post('/assignCharterGrade', 'StudentController@assignCharterGrade');
+Route::post('/assignCharterGrade/{id}', 'StudentController@assignCharterGrade');
+Route::get('/showCharterGrade', 'StudentController@showCharterGrade');
