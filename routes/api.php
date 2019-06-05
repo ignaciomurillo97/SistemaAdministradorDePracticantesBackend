@@ -79,6 +79,9 @@ Route::post('/student/{id}/aprove', "StudentController@aproveStudent")
 Route::post('/student/{id}/reject', "StudentController@rejectStudent")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::post('/students/assign/{student}/{professor}','StudentController@assignProfessor')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 // Catalogs
 Route::get('/catalog/gender', "CatalogController@getGender");
@@ -170,5 +173,12 @@ Route::put('/semester/{id}', 'SemesterController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
-Route::post('/document','DocumentController@store');
-Route::delete('/document/{fileName}','DocumentController@destroy');
+Route::post('/document','DocumentController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+Route::delete('/document/{fileName}','DocumentController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+

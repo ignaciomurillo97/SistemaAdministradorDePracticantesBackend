@@ -17,6 +17,6 @@ class Student extends Model
     }
 
     protected $fillable = [
-        'id', 'person_id', 'career_id', 'site_id', 'status', 'semester_id', 'image'
+        'id', 'person_id', 'career_id', 'site_id', 'status', 'semester_id', 'image','professorAssigned'
     ];
 }

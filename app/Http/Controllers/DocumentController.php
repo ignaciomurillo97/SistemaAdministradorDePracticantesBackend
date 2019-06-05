@@ -23,7 +23,6 @@ class DocumentController extends Controller
             $name = time().'.'.$extension;
             $photo->move(public_path().'\images\\',$name);
             $response = response()->json(['data'=>$name, 'error'=> NULL]);
-            //error_log($name);
             /*$photo = new Photo();
             $photo->route = 'photos/'.$name;
             error_log($name);

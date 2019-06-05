@@ -184,4 +184,12 @@ class StudentController extends Controller
         $student->save();
         return makeResponseObject("success", null);
     }
+
+    public function assignProfessor($studentID,$professorID){
+        //$response = response()->json(['data'=> $var ,'error' => NULL]);
+        $student = Student::find($studentID);
+        $student->professorAssigned = $professorID;
+        $student->save();
+        return response()->json(['data'=> $var ,'error' => NULL]);
+    }
 }

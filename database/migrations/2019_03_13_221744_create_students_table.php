@@ -18,6 +18,7 @@ class CreateStudentsTable extends Migration
             $table->bigInteger('person_id');
             $table->bigInteger('career_id');
             $table->bigInteger('site_id');
+            $table->bigInteger('professorAssigned')->nullable();
             $table->integer('status');
             $table->timestamps();
         });
