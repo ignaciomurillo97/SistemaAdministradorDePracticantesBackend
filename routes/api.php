@@ -178,9 +178,13 @@ Route::post('/document','DocumentController@store')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
-Route::delete('/document/{fileName}','DocumentController@destroy')
+Route::delete('/document/{id}','DocumentController@destroy')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+
+Route::post('/uploadcharter','DocumentController@uploadCharter')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
 
 // Professor
 Route::get('/professor', 'ProfessorController@index')

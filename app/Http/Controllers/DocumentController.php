@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
+use App\Models\Document;
 
 class DocumentController extends Controller
 {
@@ -23,11 +25,10 @@ class DocumentController extends Controller
             $name = time().'.'.$extension;
             $photo->move(public_path().'\images\\',$name);
             $response = response()->json(['data'=>$name, 'error'=> NULL]);
-            /*$photo = new Photo();
-            $photo->route = 'photos/'.$name;
-            error_log($name);
-            $photo->report = $report->id;
-            $photo->save();*/
+            $file = new Document();
+            $file->name = '\images\\'.$name;
+            $file->person_id = auth()->guard('api')->user()->person_id;
+            $file->save();
         }
         return $response;
     }
@@ -49,13 +50,33 @@ class DocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($fileName)
+    public function destroy($id)
     {
         $response = response()->json(['data'=>'failed', 'error'=> 'No file to delete']);
-        $path = public_path().'\images\\'.$fileName;
-        if(File::exists($path)){
-            File::delete($path);
-            $response = response()->json(['data'=>'success', 'error'=> NULL]);
+        $file = Document::find($id);
+        if($file != null){
+            $path = public_path().$file->name;
+            if(File::exists($path)){
+                File::delete($path);
+                $file->delete();
+                $response = response()->json(['data'=>'success', 'error'=> NULL]);
+            }
+        }
+        return $response;
+    }
+
+    public function uploadCharter(Request $request){
+        $response = response()->json(['data'=>'failed', 'error'=> 'No file to upload']);
+        if(Input::hasFile('file')){
+            $charter = Input::file('file');
+            $extension = $charter->getClientOriginalExtension();
+            $name = 'charter'.time().'.'.$extension;
+            $charter->move(public_path().'\images\\',$name);
+            $response = response()->json(['data'=>$name, 'error'=> NULL]);
+            $file = new Document();
+            $file->name = '\images\\'.$name;
+            $file->person_id = auth()->guard('api')->user()->person_id;
+            $file->save();
         }
         return $response;
     }
