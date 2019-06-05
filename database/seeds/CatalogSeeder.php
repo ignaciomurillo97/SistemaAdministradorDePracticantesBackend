@@ -40,6 +40,10 @@ class CatalogSeeder extends Seeder
         $company = new Scope;
         $company->scope = "company";
         $company->save();
+
+        $professor = new Scope;
+        $professor->scope = "professor";
+        $professor->save();
     }
 
     public function createCareersAndSites() {
