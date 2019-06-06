@@ -205,3 +205,20 @@ Route::delete('/professor/{id}', 'ProfessorController@destroy')
 
 Route::post('/assignCharterGrade/{id}', 'StudentController@assignCharterGrade');
 Route::get('/showCharterGrade', 'StudentController@showCharterGrade');
+
+// Coordinator
+Route::get('/coordinator', 'CoordinatorController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/coordinator', 'CoordinatorController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/coordinator/{id}', 'CoordinatorController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/coordinator/{id}', 'CoordinatorController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/coordinator/{id}', 'CoordinatorController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
