@@ -20,7 +20,7 @@ class CreateStudentsTable extends Migration
             $table->bigInteger('site_id');
             $table->bigInteger('professorAssigned')->nullable();
             $table->string('status');
-            $table->unsignedBigInteger('semester_id');
+            $table->unsignedBigInteger('semester_id')->nullable();
             $table->foreign('semester_id')->references('id')->on('semesters');
             $table->timestamps();
         });
