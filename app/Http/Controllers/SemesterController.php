@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\EventType;
+use App\Models\Semester;
 use Illuminate\Support\Facades\Validator;
 
-class EventTypeController extends Controller
+class SemesterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class EventTypeController extends Controller
      */
     public function index()
     {
-        $types = EventType::all();
-        return response()->json(['data'=> $types,'error' => NULL]);
+        $semester = Semester::all();
+        return response()->json(['data'=> $semester,'error' => NULL]);
     }
 
     /**
@@ -39,16 +39,18 @@ class EventTypeController extends Controller
     {
         $response = response()->json(['data'=>'success', 'error' => NULL]);
         $validator = Validator::make($request->all(), [
-           'name' => 'required|string',
-           'description' => 'string',
+           'semester' => 'required',
+           'start' => 'required',
+           'end' => 'required',
         ]);
         if($validator->fails()){
             $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
         }else{
-            $type = new EventType;
-            $type->name = $request->name;
-            $type->description = $request->description;
-            $type->save();
+            $semester = new Semester;
+            $semester->semester = $request->semester;
+            $semester->start = $request->start;
+            $semester->end = $request->end;
+            $semester->save();
         }
         return $response;
     }
@@ -56,23 +58,22 @@ class EventTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Semester $semester)
     {
-        //
-        $eventType = EventType::find($id);
-        return response()->json(['data' => $eventType, 'error' => NULL]);
+        $semester = Semester::find($id);
+        return response()->json(['data'=> $semester ,'error' => NULL]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Semester $semester)
     {
         //
     }
@@ -81,18 +82,18 @@ class EventTypeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Semester $semester)
     {
         try {
-            $eventType = EventType::find($id);
-            if ($eventType != null){
-                $eventType->update($request->all());
+            $semester = Semester::find($id);
+            if ($semester != null){
+                $semester->update($request->all());
                 return makeResponseObject("Success", null);
             }
-            return makeResponseObject("Failed", "El tipo de evento no existe");
+            return makeResponseObject("Failed", "El semestre no existe");
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage);
         }
@@ -101,18 +102,18 @@ class EventTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Semester $semester)
     {
         try {
-            $eventType = EventType::find($id);
-            if ($eventType != null) {
-                $eventType->delete();
+            $semester = Semester::find($id);
+            if ($semester != null) {
+                $semester->delete();
                 return makeResponseObject("Success", null);
             }
-            return makeResponseObject("Failed", "El tipo de evento no existe");
+            return makeResponseObject("Failed", "El semestre no existe");
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage());
         }

@@ -1,39 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
-use App\Models\CareerAndSitePerCompany;
-use App\Http\Resources\CareerAndSitePerCompanyResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Person;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
-class CoordinatorController extends Controller
+class ProfessorController extends Controller
 {
-    public function getCompanyRegistrationRequest (Request $request) {
-        $coordinator = auth()->guard('api')->user()->person->coordinator;
-
-        return new CareerAndSitePerCompanyResource(
-            CareerAndSitePerCompany::where('site_id', $coordinator->site_id)->get()
-        );
-    }
-
-    public function aproveCompanyRegistration (Request $request, int $id) {
-        $relation = CareerAndSitePerCompany::find($id);
-        $relation->status = 'aproved';
-        $relation->save();
-        return makeResponseObject('success', null);
-    }
-
-    public function denyCompanyRegistration (Request $request, int $id) {
-        $relation = CareerAndSitePerCompany::find($id);
-        $relation->status = 'denied';
-        $relation->save();
-        return makeResponseObject('success', null);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -41,13 +18,13 @@ class CoordinatorController extends Controller
      */
     public function index()
     {
-        $coordinator = DB::table('users as u')
+        $professors = DB::table('users as u')
                             ->join('people as p', 'p.id', '=', 'u.person_id')
-                            ->where('u.scope_id', 2)
+                            ->where('u.scope_id', 5)
                             ->select('u.email', 'p.name',
                                     'p.lastName', 'p.secondLastName', 'p.telephone')
                             ->get();
-        return response()->json(['data'=> $coordinator,'error' => NULL]);
+        return response()->json(['data'=> $professors,'error' => NULL]);
     }
 
     /**
@@ -102,7 +79,7 @@ class CoordinatorController extends Controller
 
     private function setDefaultValues( &$userData, &$personData) {
         $userData["person_id"] = $personData["id"];
-        $userData["scope_id"] = 2; // Coordinator scoppe id
+        $userData["scope_id"] = 5; // Professor scoppe id
         $userData["password"] = bcrypt($userData["password"]);
     }
 
@@ -114,9 +91,9 @@ class CoordinatorController extends Controller
      */
     public function show($id)
     {
-        $coordinator = Person::find($id);
-        $coordinatorUser = User::where('person_id', $coordinator->id)->get();
-        return response()->json(['data'=> ['coordinator' => $coordinator, 'coordinatorUser' => $professorUser] ,'error' => NULL]);
+        $professor = Person::find($id);
+        $professorUser = User::where('person_id', $professor->id)->get();
+        return response()->json(['data'=> ['professor' => $professor, 'professorUser' => $professorUser] ,'error' => NULL]);
     }
 
     /**
@@ -127,7 +104,7 @@ class CoordinatorController extends Controller
      */
     public function edit($id)
     {
-        // 
+        //
     }
 
     /**
@@ -140,12 +117,12 @@ class CoordinatorController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $coordinator = Person::find($id);
-            if ($coordinator != null){
-                $coordinator->update($request->all());
+            $professor = Person::find($id);
+            if ($professor != null){
+                $professor->update($request->all());
                 return makeResponseObject("Success", null);
             }
-            return makeResponseObject("Failed", "El coordinador no existe");
+            return makeResponseObject("Failed", "El profesor no existe");
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage);
         }
@@ -160,15 +137,15 @@ class CoordinatorController extends Controller
     public function destroy($id)
     {
         try {
-            $coordinator = Person::find($id);
-            $coordinatorId = User::select('id')->where('person_id', $coordinator->id)->get();
+            $professor = Person::find($id);
+            $professorId = User::select('id')->where('person_id', $professor->id)->get();
             
-            if ($coordinator != null) {
-                DB::table('Users')->where('id', $coordinatorId)->delete();
-                $coordinator->delete();
+            if ($professor != null) {
+                DB::table('Users')->where('id', $professorId)->delete();
+                $professor->delete();
                 return makeResponseObject("Success", null);
             }
-            return makeResponseObject(null, "El coordinador no existe");
+            return makeResponseObject(null, "El profesor no existe");
         } catch (\Exception $e) {
             return makeResponseObject(null, $e->getMessage());
         }

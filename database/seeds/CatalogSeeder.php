@@ -40,6 +40,10 @@ class CatalogSeeder extends Seeder
         $company = new Scope;
         $company->scope = "company";
         $company->save();
+
+        $professor = new Scope;
+        $professor->scope = "professor";
+        $professor->save();
     }
 
     public function createCareersAndSites() {
@@ -75,6 +79,8 @@ class CatalogSeeder extends Seeder
 
     public function createSemesters() {
         $semester = new Semester(["semester" => 1, "start"=>date_create("2019-2-6"), "end"=>date_create("2019-6-15")]);
+        $semester->save();
+        $semester = new Semester(["semester" => 2, "start"=>date_create("2019-7-22"), "end"=>date_create("2019-8-11")]);
         $semester->save();
     }
 

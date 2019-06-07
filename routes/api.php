@@ -78,6 +78,9 @@ Route::post('/student/{id}/aprove', "StudentController@aproveStudent")
 Route::post('/student/{id}/reject', "StudentController@rejectStudent")
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::post('/students/assign/{student}/{professor}','StudentController@assignProfessor')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 // Person
 Route::get('/person/{id}', "PersonController@index");
@@ -164,3 +167,71 @@ Route::get('/mail/notify','EmailController@notifyEvent')
 	->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
 
+//Semester
+Route::get('/semester', 'SemesterController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/semester', 'SemesterController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/semester/{id}', 'SemesterController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/semester/{id}', 'SemesterController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/semester/{id}', 'SemesterController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+
+Route::post('/document','DocumentController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+Route::delete('/document/{id}','DocumentController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+Route::post('/uploadcharter','DocumentController@uploadCharter')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
+
+// Professor
+Route::get('/professor', 'ProfessorController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/professor', 'ProfessorController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/professor/{id}', 'ProfessorController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/professor/{id}', 'ProfessorController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/professor/{id}', 'ProfessorController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+Route::post('/assignCharterGrade/{id}', 'StudentController@assignCharterGrade');
+Route::get('/showCharterGrade', 'StudentController@showCharterGrade');
+
+// Coordinator
+Route::get('/coordinator', 'CoordinatorController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::post('/coordinator', 'CoordinatorController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::get('/coordinator/{id}', 'CoordinatorController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/coordinator/{id}', 'CoordinatorController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::delete('/coordinator/{id}', 'CoordinatorController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+Route::get('/peoplePerSemester','StaticsController@peoplePerSemester');
