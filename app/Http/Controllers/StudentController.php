@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\Student;
 use App\Models\Person;
 use App\Models\User;
+use App\Models\InternshipProcessEvaluation;
 use App\Models\Document;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Input;
@@ -206,5 +207,15 @@ class StudentController extends Controller
         $person_id = auth()->guard('api')->user()->person_id;
         $docu = Document::select('grade')->where('person_id',$person_id)->get();
         return response()->json(['data'=> $docu ,'error' => NULL]);
+    }
+
+    public function storeInternshipProcessEvaluation(Request $request) {
+        $student_id = $request->student_id;
+        $evaluation = $request->evaluation;
+        $internEvalModel = InternshipProcessEvaluation::create([
+            "student_id" => $student_id,
+            "evaluation" => $evaluation
+        ]);
+        return makeResponseObject('Success', NULL);
     }
 }
