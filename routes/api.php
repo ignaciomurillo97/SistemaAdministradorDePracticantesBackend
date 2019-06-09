@@ -81,6 +81,12 @@ Route::post('/student/{id}/reject', "StudentController@rejectStudent")
 Route::post('/students/assign/{student}/{professor}','StudentController@assignProfessor')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+Route::post('student/evaluation/internship-process', 'StudentController@storeInternshipProcessEvaluation')
+    ->middleware('auth:api')
+    ->middleware('scope:student');
+Route::post('student/evaluation/internship-professor', 'StudentController@storeInternshipProfessorEvaluation')
+    ->middleware('auth:api')
+    ->middleware('scope:student');
 
 // Person
 Route::get('/person/{id}', "PersonController@index");
@@ -235,7 +241,6 @@ Route::delete('/coordinator/{id}', 'CoordinatorController@destroy')
     ->middleware('scope:super-user,coordinator');
 
 Route::get('/peoplePerSemester','StaticsController@peoplePerSemester');
-
 Route::get('/rubric', 'RubricController@displayRubric')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
