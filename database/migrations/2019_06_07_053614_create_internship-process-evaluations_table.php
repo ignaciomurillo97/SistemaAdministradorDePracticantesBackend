@@ -16,7 +16,7 @@ class CreateInternshipProcessEvaluationsTable extends Migration
         Schema::create('internship_process_evaluations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('student_id')->unsigend();
-            $table->json('evaluation');
+            $table->text('evaluation');
             $table->timestamps();
             $table->foreign('student_id', 'int_proc_eval_stud_id')
                   ->references('id')

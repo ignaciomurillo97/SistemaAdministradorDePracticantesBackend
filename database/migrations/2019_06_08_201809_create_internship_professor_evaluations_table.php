@@ -17,7 +17,7 @@ class CreateInternshipProfessorEvaluationsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('student_id')->unsigend();
             $table->bigInteger('professor_id');
-            $table->json('evaluation');
+            $table->text('evaluation');
             $table->timestamps();
             $table->foreign('student_id', 'int_prof_eval_stud_id')
                   ->references('id')
