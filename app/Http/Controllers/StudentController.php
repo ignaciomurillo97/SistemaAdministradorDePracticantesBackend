@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Person;
 use App\Models\User;
 use App\Models\InternshipProcessEvaluation;
+use App\Models\InternshipProfessorEvaluation;
 use App\Models\Document;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Input;
@@ -212,8 +213,40 @@ class StudentController extends Controller
     public function storeInternshipProcessEvaluation(Request $request) {
         $student_id = $request->student_id;
         $evaluation = $request->evaluation;
+
+        //validate student 
+        $student = Student::find($student_id);
+        if (!isset($student)) {
+            return makeResponseObject(null, 'student with id does not exist');
+        }
+
         $internEvalModel = InternshipProcessEvaluation::create([
             "student_id" => $student_id,
+            "evaluation" => $evaluation
+        ]);
+        return makeResponseObject('Success', NULL);
+    }
+
+    public function storeInternshipProfessorEvaluation(Request $request) {
+        $student_id = $request->student_id;
+        $professor_id = $request->professor_id;
+
+        // validate person is professor
+        $professor = Person::find($professor_id);
+        if (!isset($professor) || $professor->user->scope_id != 5) {
+            return makeResponseObject(null, 'professor id does not reference a professor');
+        }
+
+        //validate student 
+        $student = Student::find($student_id);
+        if (!isset($student)) {
+            return makeResponseObject(null, 'student with id does not exist');
+        }
+
+        $evaluation = $request->evaluation;
+        $internEvalModel = InternshipProfessorEvaluation::create([
+            "student_id" => $student_id,
+            "professor_id" => $professor_id,
             "evaluation" => $evaluation
         ]);
         return makeResponseObject('Success', NULL);
