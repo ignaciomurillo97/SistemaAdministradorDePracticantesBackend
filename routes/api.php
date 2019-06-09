@@ -237,3 +237,6 @@ Route::delete('/coordinator/{id}', 'CoordinatorController@destroy')
     ->middleware('scope:super-user,coordinator');
 
 Route::get('/peoplePerSemester','StaticsController@peoplePerSemester');
+Route::get('/rubric', 'RubricController@displayRubric')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator,student');
