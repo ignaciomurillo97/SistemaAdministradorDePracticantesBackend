@@ -58,7 +58,7 @@ class CoordinatorController extends Controller
         $coordinator = DB::table('users as u')
                             ->join('people as p', 'p.id', '=', 'u.person_id')
                             ->where('u.scope_id', 2)
-                            ->select('u.email','p.id', 'p.name',
+                            ->select('u.email', 'p.id', 'p.name',
                                     'p.lastName', 'p.secondLastName', 'p.telephone')
                             ->get();
         return response()->json(['data'=> $coordinator,'error' => NULL]);
