@@ -114,6 +114,7 @@ class CoordinatorController extends Controller
         $person->save();
         $person->user()->save(User::create($userData));
         $coordinator = Coordinator::create($coordinatorData);
+        $coordinator->save();
     }
 
     private function setDefaultValues( &$userData, &$personData, &$coordinatorData) {
