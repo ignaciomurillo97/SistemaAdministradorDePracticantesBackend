@@ -29,7 +29,7 @@ class EventController extends Controller
             return $event;
            }
         });
-        return response()->json(['data'=> $events,'error' => NULL]);
+        return response()->json(['data'=> $events.values(),'error' => NULL]);
     }
 
     /**

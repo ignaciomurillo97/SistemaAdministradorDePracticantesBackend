@@ -7,6 +7,7 @@ use App\Http\Resources\CareerAndSitePerCompanyResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Person;
+use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
@@ -31,6 +32,19 @@ class CoordinatorController extends Controller
         $relation = CareerAndSitePerCompany::find($id);
         $relation->status = 'denied';
         $relation->save();
+        return makeResponseObject('success', null);
+    }
+
+    public function getStudentWithStatus (Request $request, $status) {
+        $students = Student::where('status', $status)->get();
+        return makeResponseObject($students, null);
+    }
+
+    // se busca con el carne del estudiante
+    public function aproveStudentRequest (Request $request, $id, $status) {
+        $student = Student::find($id);
+        $student->status = $status;
+        $student->save();
         return makeResponseObject('success', null);
     }
 

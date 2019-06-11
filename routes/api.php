@@ -162,6 +162,19 @@ Route::put('/coordinator/companies/requests/{id}/aprove', 'CoordinatorController
 Route::put('/coordinator/companies/requests/{id}/deny', 'CoordinatorController@denyCompanyRegistration')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator');
+    // obtener estudiante con estado
+Route::put('/coordinator/student/{id}/aprove', 'CoordinatorController@aproveStudentRequest')
+    ->defaults('status', "Aprobado")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+Route::put('/coordinator/student/{id}/deny', 'CoordinatorController@aproveStudentRequest')
+    ->defaults('status', "Rechazado")
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
+
+Route::get('/coordinator/student/{status}', 'CoordinatorController@getStudentWithStatus')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,coordinator');
 
 //Password
 Route::post('/password/request-reset', 'AuthenticationController@requestPasswordReset');
@@ -244,7 +257,6 @@ Route::delete('/coordinator/{id}', 'CoordinatorController@destroy')
     ->middleware('scope:super-user,coordinator');
 
 Route::get('/peoplePerSemester','StaticsController@peoplePerSemester');
-
 Route::get('/rubric', 'RubricController@displayRubric')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
