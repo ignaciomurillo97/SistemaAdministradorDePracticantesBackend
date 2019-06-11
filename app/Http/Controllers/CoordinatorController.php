@@ -86,10 +86,11 @@ class CoordinatorController extends Controller
         $requestContents = $request->all();
         $userData = $requestContents['user'];
         $personData = $requestContents['person'];
-        $this->setDefaultValues($userData, $personData);
+        $coordinatorData = $requestContents['coordinator'];
+        $this->setDefaultValues($userData, $personData, $coordinatorData);
 
         try {
-            $this->saveDataToDB($personData, $userData);
+            $this->saveDataToDB($personData, $userData, $coordinatorData);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollback();
             $errorCode = $e->errorInfo[1];
@@ -108,16 +109,18 @@ class CoordinatorController extends Controller
         return makeResponseObject("Success", null);
     }
 
-    private function saveDataToDB ($personData, $userData) {
+    private function saveDataToDB ($personData, $userData, $coordinatorData) {
         $person = Person::create($personData);
         $person->save();
         $person->user()->save(User::create($userData));
+        $coordinator = Coordinator::create($coordinatorData);
     }
 
-    private function setDefaultValues( &$userData, &$personData) {
+    private function setDefaultValues( &$userData, &$personData, &$coordinatorData) {
         $userData["person_id"] = $personData["id"];
         $userData["scope_id"] = 2; // Coordinator scoppe id
         $userData["password"] = bcrypt($userData["password"]);
+        $coordinatorData["person_id"] = $personData["id"];
     }
 
     /**
