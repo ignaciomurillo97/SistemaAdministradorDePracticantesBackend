@@ -23,13 +23,14 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all()->filter(function($event) {
-           $day = new Carbon($event->eventDate);
-           if($day->subDays(3) > Carbon::now()->toDateString()){
-            return $event;
-           }
-        });
-        return response()->json(['data'=> $events.values(),'error' => NULL]);
+        //$events = Event::all()->filter(function($event) {
+        //   $day = new Carbon($event->eventDate);
+        //   if($day->diffInDays(Carbon::now()) < 3){
+        //       return $event;
+        //   }
+        //})->values();
+        $events = Event::all();
+        return response()->json(['data'=> $events,'error' => NULL]);
     }
 
     /**
