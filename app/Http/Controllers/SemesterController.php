@@ -61,7 +61,7 @@ class SemesterController extends Controller
      * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function show(Semester $semester)
+    public function show($id)
     {
         $semester = Semester::find($id);
         return response()->json(['data'=> $semester ,'error' => NULL]);
@@ -85,7 +85,7 @@ class SemesterController extends Controller
      * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request, Semester $semester)
     {
         try {
             $semester = Semester::find($id);
