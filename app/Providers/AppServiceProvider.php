@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\Resource;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        setLocale(LC_ALL, 'es');
+        Carbon::setLocale('es');
         Schema::defaultStringLength(191);
         Resource::withoutWrapping();
     }

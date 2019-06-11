@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -254,10 +255,16 @@ class StudentController extends Controller
     }
 
     public function downloadConstancyLetter(Request $request) {
+        $studentPerson = auth()->guard('api')->user()->person;
+        $date = Carbon::now()->locale('es');
+        $day_of_emmision = "{$date->dayName} {$date->day} de {$date->monthName} del {$date->year}";
         $pdf = PDF::loadView('carta_constancia_estudio', [
-            'name'=> 'test name',
-            'student_id' => 13245,
-            'id' => 6789
+            'name'=> $studentPerson->name,
+            'student_id' => $studentPerson->student->id,
+            'id' => $studentPerson->id,
+            'semester_number' => 'I',
+            'semester_year' => 2019,
+            'day_of_emmision' => $day_of_emmision
         ]);
         return $pdf->stream();
     }

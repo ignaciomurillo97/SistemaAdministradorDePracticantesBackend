@@ -87,7 +87,9 @@ Route::post('student/evaluation/internship-process', 'StudentController@storeInt
 Route::post('student/evaluation/internship-professor', 'StudentController@storeInternshipProfessorEvaluation')
     ->middleware('auth:api')
     ->middleware('scope:student');
-Route::post('student/carta-de-constancia', 'StudentController@downloadConstancyLetter');
+Route::post('student/carta-de-constancia', 'StudentController@downloadConstancyLetter')
+    ->middleware('auth:api')
+    ->middleware('scope:student');
 
 // Person
 Route::get('/person/{id}', "PersonController@index");
