@@ -85,7 +85,7 @@ class SemesterController extends Controller
      * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Semester $semester)
+    public function update($id)
     {
         try {
             $semester = Semester::find($id);
@@ -105,7 +105,7 @@ class SemesterController extends Controller
      * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Semester $semester)
+    public function destroy($id)
     {
         try {
             $semester = Semester::find($id);
