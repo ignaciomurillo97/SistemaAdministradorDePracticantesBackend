@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Person;
 use App\Models\Student;
+use App\Models\Coordinator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
