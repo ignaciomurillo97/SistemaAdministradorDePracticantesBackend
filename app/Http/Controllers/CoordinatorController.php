@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Person;
 use App\Models\Student;
+use App\Models\Coordinator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 
@@ -58,7 +59,7 @@ class CoordinatorController extends Controller
         $coordinator = DB::table('users as u')
                             ->join('people as p', 'p.id', '=', 'u.person_id')
                             ->where('u.scope_id', 2)
-                            ->select('u.email', 'p.name',
+                            ->select('u.email', 'p.id', 'p.name',
                                     'p.lastName', 'p.secondLastName', 'p.telephone')
                             ->get();
         return response()->json(['data'=> $coordinator,'error' => NULL]);
@@ -86,10 +87,11 @@ class CoordinatorController extends Controller
         $requestContents = $request->all();
         $userData = $requestContents['user'];
         $personData = $requestContents['person'];
-        $this->setDefaultValues($userData, $personData);
+        $coordinatorData = $requestContents['coordinator'];
+        $this->setDefaultValues($userData, $personData, $coordinatorData);
 
         try {
-            $this->saveDataToDB($personData, $userData);
+            $this->saveDataToDB($personData, $userData, $coordinatorData);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollback();
             $errorCode = $e->errorInfo[1];
@@ -108,16 +110,19 @@ class CoordinatorController extends Controller
         return makeResponseObject("Success", null);
     }
 
-    private function saveDataToDB ($personData, $userData) {
+    private function saveDataToDB ($personData, $userData, $coordinatorData) {
         $person = Person::create($personData);
         $person->save();
         $person->user()->save(User::create($userData));
+        $coordinator = Coordinator::create($coordinatorData);
+        $coordinator->save();
     }
 
-    private function setDefaultValues( &$userData, &$personData) {
+    private function setDefaultValues( &$userData, &$personData, &$coordinatorData) {
         $userData["person_id"] = $personData["id"];
         $userData["scope_id"] = 2; // Coordinator scoppe id
         $userData["password"] = bcrypt($userData["password"]);
+        $coordinatorData["person_id"] = $personData["id"];
     }
 
     /**

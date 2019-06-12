@@ -260,3 +260,21 @@ Route::get('/peoplePerSemester','StaticsController@peoplePerSemester');
 Route::get('/rubric', 'RubricController@displayRubric')
     ->middleware('auth:api')
     ->middleware('scope:super-user,coordinator,student');
+
+// Administrator
+Route::get('/administrator', 'AdminController@index')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user,Admin');
+Route::post('/administrator', 'AdminController@store')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user');
+Route::get('/administrator/{id}', 'AdminController@show')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user');
+Route::put('/administrator/{id}', 'AdminController@update')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user');
+Route::delete('/administrator/{id}', 'AdminController@destroy')
+    ->middleware('auth:api')
+    ->middleware('scope:super-user');
+

@@ -61,7 +61,7 @@ class SemesterController extends Controller
      * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function show(Semester $semester)
+    public function show($id)
     {
         $semester = Semester::find($id);
         return response()->json(['data'=> $semester ,'error' => NULL]);
@@ -105,7 +105,7 @@ class SemesterController extends Controller
      * @param  \App\Semester  $semester
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Semester $semester)
+    public function destroy($id)
     {
         try {
             $semester = Semester::find($id);
