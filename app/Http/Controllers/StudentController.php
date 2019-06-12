@@ -169,7 +169,7 @@ class StudentController extends Controller
         if ($student == null) {
             return makeResponseObject(null, 'El usuario no existe');
         }
-        $student->status = 2;// aprobado
+        $student->status = 'Aprobado';// aprobado
         $student->save();
         return makeResponseObject("success", null);
     }
@@ -185,7 +185,7 @@ class StudentController extends Controller
         if ($student == null) {
             return makeResponseObject(null, 'El usuario no existe');
         }
-        $student->status = 3;// rechazado
+        $student->status = 'Rechazado';// rechazado
         $student->save();
         return makeResponseObject("success", null);
     }
