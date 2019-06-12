@@ -23,12 +23,6 @@ class EventController extends Controller
      */
     public function index()
     {
-        //$events = Event::all()->filter(function($event) {
-        //   $day = new Carbon($event->eventDate);
-        //   if($day->diffInDays(Carbon::now()) < 3){
-        //       return $event;
-        //   }
-        //})->values();
         $events = Event::all();
         return response()->json(['data'=> $events,'error' => NULL]);
     }
@@ -217,5 +211,18 @@ class EventController extends Controller
             $response =  response()->json(['data'=>'failed', 'error' => $validator->messages()->first()]);
         }
         return $response;
+    }
+
+    public function eventsToShowBeforeLimitDay()
+    {
+        $limitDay = 3; //Days before to subscribe an event
+
+        $events = Event::all()->filter(function($event) {
+          $day = new Carbon($event->eventDate);
+          if($day->diffInDays(Carbon::now()) < $limitDay){
+              return $event;
+          }
+        })->values();
+        return response()->json(['data'=> $events,'error' => NULL]);
     }
 }
