@@ -24,10 +24,10 @@ class StaticsController extends Controller
      */
     public function peoplePerSemester(Request $request)
     {
-        $query = DB::select("select people.gender, count(person_id) as people from students 
+        $query = DB::select("select gender, count(person_id) as people from students 
                             join people on people.id = students.person_id
                             join genders on genders.id = gender_id
-                    where semester_id = ".$request->semester." and status = '".$request->status."' group by people.gender");
+                    where semester_id = ".$request->semester." and status = '".$request->status."' group by gender");
         return response()->json(['data'=> $query,'error' => NULL]);
     }
 
